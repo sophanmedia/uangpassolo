@@ -2,23 +2,24 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buku Tamu & Catatan Hadiah Pernikahan Online</title>
-    <!-- PWA Meta Tags & Manifest -->
-    <meta name="theme-color" content="#13261f">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>E-Amplop & Buku Tamu Pernikahan</title>
+    <!-- PWA Meta Tags & Manifest (Berjalan di latar belakang) -->
+    <meta name="theme-color" content="#F2F2F7">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="E-Amplop">
     <link rel="manifest" id="pwaManifestLink" href="manifest.json">
     <link rel="apple-touch-icon" id="appleTouchIconLink" href="icon-192.png">
     <link rel="icon" type="image/png" sizes="192x192" id="faviconLink" href="icon-192.png">
+
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Playfair Display & Inter -->
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
@@ -27,19 +28,18 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
+                        sans: ['-apple-system', 'BlinkMacSystemFont', 'Inter', 'Segoe UI', 'Roboto', 'sans-serif'],
                     },
                     colors: {
-                        wedding: {
-                            50: '#fdfbf7',
-                            100: '#f7f1e5',
-                            200: '#efe2c8',
-                            500: '#c59b27',
-                            600: '#a67f19',
-                            700: '#856212',
-                            800: '#1e3a2f',
-                            900: '#13261f',
+                        ios: {
+                            bg: '#F2F2F7',
+                            card: '#FFFFFF',
+                            blue: '#007AFF',
+                            green: '#34C759',
+                            orange: '#FF9500',
+                            red: '#FF3B30',
+                            gray: '#8E8E93',
+                            separator: '#E5E5EA'
                         }
                     }
                 }
@@ -49,636 +49,594 @@
 
     <style>
         body {
-            background-color: #fdfbf7;
-            background-image: radial-gradient(#e5dec9 1px, transparent 1px);
-            background-size: 24px 24px;
+            background-color: #F2F2F7;
+            color: #1C1C1E;
+            -webkit-tap-highlight-color: transparent;
         }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(10px);
+        /* Efek Glassmorphism khas iOS / App Store */
+        .ios-blur {
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
         }
-        /* Custom scrollbar */
+        .ios-card {
+            background: #FFFFFF;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+        .ios-btn-active:active {
+            transform: scale(0.96);
+        }
+        /* Animasi Denyut Mikrofon Aktif */
+        @keyframes micPulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.55); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 59, 48, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0); }
+        }
+        .mic-listening {
+            background-color: #FF3B30 !important;
+            color: #FFFFFF !important;
+            border-color: #FF3B30 !important;
+            animation: micPulse 1.4s infinite;
+        }
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            width: 5px;
+            height: 5px;
         }
         ::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
+            background: #D1D1D6;
             border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
         }
         @media print {
             .no-print {
                 display: none !important;
             }
             body {
-                background: white !important;
+                background: #FFFFFF !important;
             }
         }
     </style>
 </head>
-<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+<body class="antialiased min-h-screen flex flex-col pb-24 sm:pb-10">
 
-    <!-- Top Navigation & Live Status Bar -->
-    <header class="bg-wedding-900 text-white border-b border-wedding-700/40 sticky top-0 z-30 shadow-md no-print">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-3">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-600 flex items-center justify-center text-wedding-900 shadow-inner">
-                    <i class="fa-solid fa-rings-wedding fa-heart text-lg"></i>
+    <!-- Canvas Tersembunyi untuk Ikon PWA (Otomatis berjalan di latar belakang) -->
+    <div class="hidden" aria-hidden="true">
+        <canvas id="canvasIcon192" width="192" height="192"></canvas>
+        <canvas id="canvasIcon512" width="512" height="512"></canvas>
+    </div>
+
+    <!-- Top App Store Navigation Bar -->
+    <header class="ios-blur sticky top-0 z-30 border-b border-black/5 no-print">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+            <!-- Brand & Couple Info -->
+            <div class="flex items-center gap-3 min-w-0">
+                <div class="w-11 h-11 rounded-[14px] bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20 flex-shrink-0">
+                    <i class="fa-solid fa-envelope-open-text text-lg"></i>
                 </div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <h1 id="headerCoupleName" class="font-serif font-bold text-lg sm:text-xl tracking-wide text-amber-200">Catatan Hadiah Pernikahan</h1>
-                        <button onclick="openCoupleModal()" title="Ubah Nama Mempelai" class="text-xs text-slate-300 hover:text-amber-300 transition p-1">
-                            <i class="fa-solid fa-pen-to-square"></i>
+                <div class="min-w-0">
+                    <div class="flex items-center gap-1.5">
+                        <h1 id="headerCoupleName" class="font-extrabold text-base sm:text-lg tracking-tight text-slate-900 truncate">E-Amplop Pernikahan</h1>
+                        <button onclick="openCoupleModal()" title="Ubah Nama Mempelai" class="text-slate-400 hover:text-ios-blue transition p-1">
+                            <i class="fa-solid fa-pen text-[11px]"></i>
                         </button>
                     </div>
-                    <p id="headerEventDate" class="text-xs text-slate-300">Buku Tamu & Rekapitulasi Amplop Digital Real-Time</p>
+                    <div class="flex items-center gap-2 text-xs text-slate-500">
+                        <span id="headerEventDate" class="truncate">Buku Tamu & Hadiah Digital</span>
+                        <span>•</span>
+                        <span class="inline-flex items-center gap-1 font-medium text-emerald-600">
+                            <span id="syncDot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            <span id="syncText" class="text-[11px]">Live</span>
+                        </span>
+                    </div>
                 </div>
             </div>
 
-            <!-- Live Sync Status & Actions -->
-            <div class="flex items-center gap-2 sm:gap-2.5 flex-wrap">
-                <div id="syncBadge" class="flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-full text-xs font-medium border border-white/15">
-                    <span id="syncDot" class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
-                    <span id="syncText">Menghubungkan Cloud...</span>
-                </div>
+            <!-- Segmented Control Desktop (2 Menu Utama: Dashboard & Daftar Tamu) -->
+            <nav class="hidden sm:flex items-center bg-slate-200/80 p-1 rounded-2xl">
+                <button onclick="switchMainTab('dashboard')" id="desktopTabDashboard"
+                    class="px-5 py-1.5 rounded-xl text-xs font-bold transition-all bg-white text-slate-900 shadow-sm flex items-center gap-1.5">
+                    <i class="fa-solid fa-chart-pie text-ios-blue"></i>
+                    <span>Dashboard</span>
+                </button>
+                <button onclick="switchMainTab('guests')" id="desktopTabGuests"
+                    class="px-5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1.5">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Daftar Tamu</span>
+                    <span id="navGuestCountBadge" class="bg-blue-100 text-ios-blue px-1.5 py-0.2 rounded-full text-[10px]">0</span>
+                </button>
+            </nav>
 
-                <!-- Tombol Install Aplikasi ke HP (PWA) -->
-                <button id="installPwaBtn" onclick="triggerInstallPwa()" class="bg-gradient-to-r from-amber-400 to-yellow-500 hover:from-amber-300 hover:to-yellow-400 text-wedding-900 text-xs font-bold px-3 py-2 rounded-xl shadow transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-mobile-screen-button text-sm"></i>
-                    <span>Install di HP</span>
+            <!-- Action Buttons Right -->
+            <div class="flex items-center gap-2">
+                <!-- Tombol Install App (PWA) -->
+                <button id="installPwaBtn" onclick="triggerInstallPwa()" title="Install Aplikasi di HP"
+                    class="bg-slate-200/80 hover:bg-slate-300/70 text-ios-blue font-bold text-xs px-3 py-2 rounded-full transition ios-btn-active flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-down-to-bracket"></i>
+                    <span class="hidden md:inline">Install App</span>
                 </button>
 
-                <!-- Tombol Kode & Download File PWA (manifest.json, sw.js, icon 192 & 512) -->
-                <button onclick="openPwaKitModal()" class="bg-emerald-700/80 hover:bg-emerald-600 text-white text-xs font-semibold px-3 py-2 rounded-xl border border-emerald-400/30 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-file-code text-sm text-amber-300"></i>
-                    <span>File PWA & Icon</span>
-                </button>
-
-                <button onclick="openGithubGuideModal()" class="bg-white/10 hover:bg-white/20 text-white text-xs font-medium px-3 py-2 rounded-xl border border-white/15 transition flex items-center gap-1.5">
-                    <i class="fa-solid fa-shield-halved text-amber-300 text-sm"></i>
-                    <span class="hidden sm:inline">Rules Firebase & GitHub</span>
+                <!-- Tombol Catat Tamu Baru -->
+                <button onclick="openGuestFormModal()"
+                    class="bg-ios-blue hover:bg-blue-600 text-white font-bold text-xs sm:text-sm px-3.5 sm:px-4 py-2 rounded-full shadow-md shadow-blue-500/25 transition ios-btn-active flex items-center gap-1.5">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Catat Tamu</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-5xl w-full mx-auto px-4 sm:px-6 pt-5 sm:pt-7">
 
-        <!-- Summary Statistics Cards -->
-        <section class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8">
-            <!-- Total Nominal Card -->
-            <div class="glass-card rounded-2xl p-5 sm:p-6 border border-amber-200/80 shadow-sm relative overflow-hidden">
-                <div class="flex justify-between items-start">
+        <!-- ============================================================== -->
+        <!-- MENU 1: DASHBOARD VIEW (Tampilan Ringkasan Bergaya App Store)   -->
+        <!-- ============================================================== -->
+        <section id="viewDashboard" class="space-y-6">
+
+            <!-- App Store Hero Wallet Card -->
+            <div class="rounded-[26px] bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-white p-6 sm:p-8 shadow-xl relative overflow-hidden">
+                <div class="absolute -right-12 -top-12 w-52 h-52 rounded-full bg-blue-500/20 blur-2xl pointer-events-none"></div>
+                <div class="absolute -left-12 -bottom-12 w-48 h-48 rounded-full bg-indigo-500/20 blur-2xl pointer-events-none"></div>
+
+                <div class="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-6">
                     <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-amber-800/80 mb-1">Total Hadiah Terkumpul</p>
-                        <div class="flex items-center gap-2.5">
-                            <h2 id="statTotalAmount" class="text-2xl sm:text-3xl font-extrabold text-wedding-900 tracking-tight">Rp 0</h2>
-                            <button onclick="togglePrivacyAmount()" class="text-slate-400 hover:text-slate-700 transition p-1 no-print" title="Sembunyikan/Tampilkan Nominal">
+                        <div class="inline-flex items-center gap-2 bg-white/10 border border-white/15 px-3 py-1 rounded-full text-[11px] font-semibold text-blue-200 mb-3">
+                            <i class="fa-solid fa-sparkles text-amber-300"></i>
+                            <span>Total Hadiah Pernikahan Terkumpul</span>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <h2 id="statTotalAmount" class="text-3xl sm:text-5xl font-extrabold tracking-tight">Rp 0</h2>
+                            <button onclick="togglePrivacyAmount()" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white/80 transition" title="Sembunyikan/Tampilkan Nominal">
                                 <i id="privacyIcon" class="fa-regular fa-eye text-sm"></i>
                             </button>
                         </div>
-                        <p id="statHighestGift" class="text-xs text-slate-500 mt-2">Tertinggi: Rp 0</p>
-                    </div>
-                    <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center text-xl shadow-inner">
-                        <i class="fa-solid fa-sack-dollar"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Total Guests Card -->
-            <div class="glass-card rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-sm">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Total Tamu Memberi</p>
-                        <h2 id="statTotalGuests" class="text-2xl sm:text-3xl font-extrabold text-slate-800">0 <span class="text-base font-normal text-slate-500">Orang</span></h2>
-                        <p id="statMethodBreakdown" class="text-xs text-slate-500 mt-2">Tunai: 0 • Transfer: 0</p>
-                    </div>
-                    <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-xl shadow-inner">
-                        <i class="fa-solid fa-users"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Average Gift Card -->
-            <div class="glass-card rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-sm">
-                <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1">Rata-Rata Nominal</p>
-                        <h2 id="statAverageAmount" class="text-2xl sm:text-3xl font-extrabold text-slate-800">Rp 0</h2>
-                        <p id="statLastUpdated" class="text-xs text-emerald-700 font-medium mt-2 flex items-center gap-1">
-                            <i class="fa-regular fa-clock"></i> Menunggu data...
+                        <p id="statLastUpdated" class="text-xs text-slate-300 mt-2.5 flex items-center gap-1.5">
+                            <i class="fa-regular fa-clock text-blue-300"></i>
+                            <span>Menunggu pembaruan data...</span>
                         </p>
                     </div>
-                    <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center text-xl shadow-inner">
-                        <i class="fa-solid fa-chart-pie"></i>
+
+                    <div class="flex flex-wrap sm:flex-col items-start sm:items-end gap-2">
+                        <button onclick="openGuestFormModal()" class="bg-white text-slate-900 hover:bg-blue-50 font-bold text-xs sm:text-sm px-4 py-2.5 rounded-2xl shadow-sm transition ios-btn-active flex items-center gap-2">
+                            <i class="fa-solid fa-microphone-lines text-ios-red"></i>
+                            <span>Input Tamu + Suara</span>
+                        </button>
+                        <span id="statHighestGift" class="text-xs text-blue-200/90 font-medium">Hadiah Tertinggi: Rp 0</span>
                     </div>
                 </div>
             </div>
+
+            <!-- Bento Grid Metrics (4 Kartu Statistik iOS) -->
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+                <!-- Total Tamu -->
+                <div class="ios-card p-4 sm:p-5">
+                    <div class="w-9 h-9 rounded-xl bg-blue-50 text-ios-blue flex items-center justify-center text-base mb-3">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Total Tamu</p>
+                    <h3 id="statTotalGuests" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">0 Orang</h3>
+                    <p class="text-[11px] text-slate-500 mt-1">Telah memberikan hadiah</p>
+                </div>
+
+                <!-- Rata-Rata Hadiah -->
+                <div class="ios-card p-4 sm:p-5">
+                    <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-base mb-3">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Rata-Rata</p>
+                    <h3 id="statAverageAmount" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">Rp 0</h3>
+                    <p class="text-[11px] text-slate-500 mt-1">Nominal per tamu</p>
+                </div>
+
+                <!-- Amplop Tunai -->
+                <div class="ios-card p-4 sm:p-5">
+                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-base mb-3">
+                        <i class="fa-solid fa-money-bill-wave"></i>
+                    </div>
+                    <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Amplop Tunai</p>
+                    <h3 id="statCashAmount" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">Rp 0</h3>
+                    <p id="statCashCount" class="text-[11px] text-slate-500 mt-1">0 Tamu</p>
+                </div>
+
+                <!-- Transfer / QRIS -->
+                <div class="ios-card p-4 sm:p-5">
+                    <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-base mb-3">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400">Transfer / QRIS</p>
+                    <h3 id="statTransferAmount" class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">Rp 0</h3>
+                    <p id="statTransferCount" class="text-[11px] text-slate-500 mt-1">0 Tamu</p>
+                </div>
+            </div>
+
+            <!-- 2-Column Dashboard Bottom: Kategori & 5 Tamu Terbaru -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+                <!-- Distribusi Kategori Tamu -->
+                <div class="lg:col-span-5 ios-card p-5 sm:p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-base text-slate-900">Rincian Kategori Tamu</h3>
+                            <span class="text-xs font-semibold text-ios-blue bg-blue-50 px-2.5 py-1 rounded-full">Statistik</span>
+                        </div>
+                        <div id="categoryBreakdownList" class="space-y-3">
+                            <p class="text-xs text-slate-400 py-6 text-center">Belum ada data kategori tamu</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                        <span>Unduh laporan lengkap ke Excel</span>
+                        <button onclick="exportToCSV()" class="font-bold text-ios-blue hover:underline flex items-center gap-1">
+                            <i class="fa-solid fa-file-csv"></i> Unduh CSV
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 5 Tamu Terbaru Masuk -->
+                <div class="lg:col-span-7 ios-card p-5 sm:p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <h3 class="font-bold text-base text-slate-900">Tamu Terbaru Tercatat</h3>
+                            <p class="text-xs text-slate-400">5 tamu terakhir yang baru saja memberikan hadiah</p>
+                        </div>
+                        <button onclick="switchMainTab('guests')" class="text-xs font-bold text-ios-blue hover:underline flex items-center gap-1">
+                            <span>Lihat Semua</span>
+                            <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </button>
+                    </div>
+
+                    <div id="recentGuestsContainer" class="divide-y divide-slate-100">
+                        <div class="py-10 text-center text-slate-400 text-xs">
+                            <i class="fa-solid fa-circle-notch fa-spin text-lg text-ios-blue mb-2"></i>
+                            <p>Memuat data dari cloud...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </section>
 
-        <!-- Main Layout Grid: Left Form (1/3) & Right Table (2/3) -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
+        <!-- ============================================================== -->
+        <!-- MENU 2: DAFTAR TAMU VIEW (Pencarian, Filter, & Daftar Lengkap)  -->
+        <!-- ============================================================== -->
+        <section id="viewGuests" class="hidden space-y-5">
 
-            <!-- Left Column: Input Form -->
-            <div class="lg:col-span-4 glass-card rounded-2xl border border-slate-200/90 shadow-md p-5 sm:p-6 lg:sticky lg:top-24 no-print">
-                <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-5">
+            <!-- Search & Filter Bar ala App Store -->
+            <div class="ios-card p-4 sm:p-5 space-y-3.5 no-print">
+                <div class="flex flex-wrap items-center justify-between gap-3">
                     <div>
-                        <h3 id="formTitle" class="font-serif font-bold text-lg text-slate-800">Tambah Data Tamu</h3>
-                        <p class="text-xs text-slate-500">Catat tamu yang memberikan hadiah pernikahan</p>
+                        <h2 class="text-lg sm:text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                            <span>Daftar Tamu Undangan</span>
+                            <span id="filteredCountBadge" class="bg-blue-50 text-ios-blue text-xs font-bold px-2.5 py-0.5 rounded-full">0</span>
+                        </h2>
+                        <p class="text-xs text-slate-500">Ketuk tombol "+ Catat Tamu" untuk menginput nama & alamat dengan suara</p>
                     </div>
-                    <span id="editModeBadge" class="hidden bg-amber-100 text-amber-800 text-xs font-semibold px-2.5 py-1 rounded-full">
-                        Mode Edit
-                    </span>
+
+                    <div class="flex items-center gap-2">
+                        <button onclick="exportToCSV()" class="bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-file-excel text-emerald-600"></i>
+                            <span>Excel/CSV</span>
+                        </button>
+                        <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-bold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-print text-slate-500"></i>
+                            <span class="hidden sm:inline">Cetak</span>
+                        </button>
+                    </div>
                 </div>
 
-                <form id="giftForm" class="space-y-4">
-                    <input type="hidden" id="editDocId" value="">
-
-                    <!-- Nama Tamu -->
-                    <div>
-                        <label for="guestName" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Nama Lengkap Tamu <span class="text-red-500">*</span>
-                        </label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                                <i class="fa-regular fa-user"></i>
-                            </span>
-                            <input type="text" id="guestName" required placeholder="Contoh: Bpk. Budi Santoso & Keluarga"
-                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:border-wedding-800 focus:ring-2 focus:ring-wedding-800/20 text-sm outline-none transition">
-                        </div>
+                <!-- Search Input & Selects -->
+                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5">
+                    <div class="sm:col-span-6 relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                        </span>
+                        <input type="text" id="searchInput" oninput="renderGuestList()" placeholder="Cari nama tamu, alamat, atau catatan..."
+                            class="w-full pl-9 pr-4 py-2.5 rounded-xl bg-slate-100/90 focus:bg-white border border-transparent focus:border-ios-blue text-sm outline-none transition">
                     </div>
 
-                    <!-- Alamat / Instansi -->
-                    <div>
-                        <label for="guestAddress" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Alamat / Instansi <span class="text-red-500">*</span>
-                        </label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                                <i class="fa-solid fa-location-dot"></i>
-                            </span>
-                            <input type="text" id="guestAddress" required placeholder="Contoh: Jl. Sudirman No. 12 / PT Maju Jaya"
-                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:border-wedding-800 focus:ring-2 focus:ring-wedding-800/20 text-sm outline-none transition">
-                        </div>
+                    <div class="sm:col-span-3">
+                        <select id="filterMethod" onchange="renderGuestList()" class="w-full px-3 py-2.5 rounded-xl bg-slate-100/90 focus:bg-white border border-transparent focus:border-ios-blue text-sm outline-none font-medium text-slate-700">
+                            <option value="ALL">Semua Metode</option>
+                            <option value="Amplop Tunai">Amplop Tunai</option>
+                            <option value="Transfer / QRIS">Transfer / QRIS</option>
+                        </select>
                     </div>
 
-                    <!-- Nominal Hadiah (Rp) -->
-                    <div>
-                        <label for="giftAmountDisplay" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Nominal Hadiah (Rp) <span class="text-red-500">*</span>
-                        </label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center font-bold text-slate-500 text-sm">
-                                Rp
-                            </span>
-                            <input type="text" id="giftAmountDisplay" inputmode="numeric" required placeholder="100.000"
-                                class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 focus:border-wedding-800 focus:ring-2 focus:ring-wedding-800/20 text-base font-bold text-slate-800 outline-none transition">
-                        </div>
-
-                        <!-- Quick Nominal Chips -->
-                        <div class="mt-2 flex flex-wrap gap-1.5">
-                            <button type="button" onclick="setQuickAmount(50000)" class="text-xs bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-600 font-medium px-2.5 py-1 rounded-lg transition border border-slate-200">50 Rb</button>
-                            <button type="button" onclick="setQuickAmount(100000)" class="text-xs bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-600 font-medium px-2.5 py-1 rounded-lg transition border border-slate-200">100 Rb</button>
-                            <button type="button" onclick="setQuickAmount(150000)" class="text-xs bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-600 font-medium px-2.5 py-1 rounded-lg transition border border-slate-200">150 Rb</button>
-                            <button type="button" onclick="setQuickAmount(200000)" class="text-xs bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-600 font-medium px-2.5 py-1 rounded-lg transition border border-slate-200">200 Rb</button>
-                            <button type="button" onclick="setQuickAmount(300000)" class="text-xs bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-600 font-medium px-2.5 py-1 rounded-lg transition border border-slate-200">300 Rb</button>
-                            <button type="button" onclick="setQuickAmount(500000)" class="text-xs bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-600 font-medium px-2.5 py-1 rounded-lg transition border border-slate-200">500 Rb</button>
-                            <button type="button" onclick="setQuickAmount(1000000)" class="text-xs bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-600 font-medium px-2.5 py-1 rounded-lg transition border border-slate-200">1 Juta</button>
-                        </div>
+                    <div class="sm:col-span-3">
+                        <select id="sortOrder" onchange="renderGuestList()" class="w-full px-3 py-2.5 rounded-xl bg-slate-100/90 focus:bg-white border border-transparent focus:border-ios-blue text-sm outline-none font-medium text-slate-700">
+                            <option value="newest">Terbaru Dicatat</option>
+                            <option value="highest">Nominal Tertinggi</option>
+                            <option value="lowest">Nominal Terendah</option>
+                            <option value="name_asc">Nama (A - Z)</option>
+                            <option value="address_asc">Alamat (A - Z)</option>
+                        </select>
                     </div>
-
-                    <!-- Metode & Kategori (2 Columns) -->
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label for="giftMethod" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                                Metode
-                            </label>
-                            <select id="giftMethod" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-wedding-800 text-sm outline-none bg-white">
-                                <option value="Amplop Tunai">Amplop Tunai</option>
-                                <option value="Transfer / QRIS">Transfer / QRIS</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label for="guestCategory" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                                Kategori Tamu
-                            </label>
-                            <select id="guestCategory" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-wedding-800 text-sm outline-none bg-white">
-                                <option value="Umum / Kerabat">Umum / Kerabat</option>
-                                <option value="Keluarga">Keluarga</option>
-                                <option value="Teman / Sahabat">Teman / Sahabat</option>
-                                <option value="Rekan Kerja">Rekan Kerja</option>
-                                <option value="Tetangga">Tetangga</option>
-                                <option value="VIP">Tamu VIP</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Catatan Tambahan / Ucapan -->
-                    <div>
-                        <label for="guestNotes" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                            Catatan / Nomor Amplop (Opsional)
-                        </label>
-                        <input type="text" id="guestNotes" placeholder="Contoh: Amplop #014 / Titipan Ibu Ani"
-                            class="w-full px-3.5 py-2 rounded-xl border border-slate-300 focus:border-wedding-800 focus:ring-2 focus:ring-wedding-800/20 text-sm outline-none transition">
-                    </div>
-
-                    <!-- Submit & Cancel Buttons -->
-                    <div class="pt-2 flex gap-2">
-                        <button type="submit" id="submitBtn"
-                            class="flex-1 bg-wedding-800 hover:bg-wedding-900 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:shadow-lg transition flex items-center justify-center gap-2 text-sm">
-                            <i class="fa-solid fa-cloud-arrow-up"></i>
-                            <span id="submitBtnText">Simpan Data Online</span>
-                        </button>
-                        <button type="button" id="cancelEditBtn" onclick="resetFormState()"
-                            class="hidden bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold py-3 px-4 rounded-xl transition text-sm">
-                            Batal
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
 
-            <!-- Right Column: Real-Time List & Filter -->
-            <div class="lg:col-span-8 glass-card rounded-2xl border border-slate-200/90 shadow-md overflow-hidden flex flex-col">
-
-                <!-- Table Header & Toolbar -->
-                <div class="p-5 sm:p-6 border-b border-slate-200/80 space-y-4">
-                    <div class="flex flex-wrap items-center justify-between gap-4">
-                        <div>
-                            <h3 class="font-serif font-bold text-lg sm:text-xl text-slate-800 flex items-center gap-2">
-                                Daftar Tamu & Nominal Hadiah
-                                <span id="filteredCountBadge" class="bg-emerald-100 text-emerald-800 font-sans text-xs font-bold px-2.5 py-0.5 rounded-full">0</span>
-                            </h3>
-                            <p class="text-xs text-slate-500">Data tersinkronisasi otomatis ke seluruh perangkat yang membuka halaman ini</p>
-                        </div>
-
-                        <!-- Export & Print Buttons -->
-                        <div class="flex items-center gap-2 no-print">
-                            <button onclick="exportToCSV()" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 text-xs font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-file-csv text-sm"></i>
-                                <span>Unduh Excel/CSV</span>
-                            </button>
-                            <button onclick="window.print()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-semibold px-3.5 py-2 rounded-xl transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-print text-sm"></i>
-                                <span class="hidden sm:inline">Cetak</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Search, Filter, & Sort Bar -->
-                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 no-print">
-                        <!-- Search Input -->
-                        <div class="sm:col-span-6 relative">
-                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
-                                <i class="fa-solid fa-magnifying-glass text-sm"></i>
-                            </span>
-                            <input type="text" id="searchInput" oninput="renderGuestList()" placeholder="Cari nama tamu, alamat, atau catatan..."
-                                class="w-full pl-10 pr-8 py-2 rounded-xl border border-slate-300 focus:border-wedding-800 text-sm outline-none">
-                        </div>
-
-                        <!-- Filter Method/Category -->
-                        <div class="sm:col-span-3">
-                            <select id="filterMethod" onchange="renderGuestList()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm outline-none bg-white">
-                                <option value="ALL">Semua Metode</option>
-                                <option value="Amplop Tunai">Amplop Tunai</option>
-                                <option value="Transfer / QRIS">Transfer / QRIS</option>
-                            </select>
-                        </div>
-
-                        <!-- Sort Select -->
-                        <div class="sm:col-span-3">
-                            <select id="sortOrder" onchange="renderGuestList()" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm outline-none bg-white">
-                                <option value="newest">Terbaru Dicatat</option>
-                                <option value="highest">Nominal Tertinggi</option>
-                                <option value="lowest">Nominal Terendah</option>
-                                <option value="name_asc">Nama (A - Z)</option>
-                                <option value="address_asc">Alamat (A - Z)</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Responsive Table / Card List -->
+            <!-- Guest List Card -->
+            <div class="ios-card overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-slate-50/90 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                            <tr class="border-b border-slate-100 bg-slate-50/70 text-[11px] font-bold uppercase tracking-wider text-slate-400">
                                 <th class="py-3.5 px-4 w-12 text-center">No</th>
-                                <th class="py-3.5 px-4">Nama Tamu & Kategori</th>
+                                <th class="py-3.5 px-4">Nama Lengkap Tamu</th>
                                 <th class="py-3.5 px-4">Alamat / Instansi</th>
                                 <th class="py-3.5 px-4 text-right">Nominal Hadiah</th>
                                 <th class="py-3.5 px-4 text-center no-print">Aksi</th>
                             </tr>
                         </thead>
                         <tbody id="guestTableBody" class="divide-y divide-slate-100 text-sm">
-                            <!-- Loading Placeholder -->
                             <tr>
                                 <td colspan="5" class="py-12 text-center text-slate-400">
-                                    <i class="fa-solid fa-circle-notch fa-spin text-2xl text-amber-600 mb-2"></i>
-                                    <p class="text-sm">Memuat data tamu dari database online...</p>
+                                    <i class="fa-solid fa-circle-notch fa-spin text-2xl text-ios-blue mb-2"></i>
+                                    <p class="text-sm">Memuat daftar tamu...</p>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- Table Footer Summary -->
-                <div class="bg-slate-50/80 px-5 py-3.5 border-t border-slate-200/80 flex flex-wrap justify-between items-center gap-2 text-xs text-slate-500">
-                    <span id="tableFooterInfo">Menampilkan 0 data tamu</span>
-                    <span id="tableFilteredSubtotal" class="font-semibold text-slate-700">Subtotal Filter: Rp 0</span>
+                <!-- Subtotal Bar -->
+                <div class="bg-slate-50/80 px-5 py-3.5 border-t border-slate-100 flex flex-wrap justify-between items-center gap-2 text-xs text-slate-500">
+                    <span id="tableFooterInfo">Menampilkan 0 tamu</span>
+                    <span id="tableFilteredSubtotal" class="font-bold text-slate-800">Subtotal: Rp 0</span>
                 </div>
             </div>
 
-        </div>
-    </main>
-    <!-- Footer with Shared Database Status -->
-    <footer class="mt-12 border-t border-slate-200/80 bg-white/70 py-5 text-center text-xs text-slate-500 no-print">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-            <p class="font-medium text-slate-600">
-                <i class="fa-solid fa-heart text-rose-500 mr-1"></i> Aplikasi Buku Tamu & Amplop Digital Pernikahan
-            </p>
-            <p class="text-[11px] text-slate-500 font-mono flex items-center gap-2">
-                <span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-sans font-semibold">1 Database Terpusat: uangpassolo-33f3b</span>
-                <span>• ID Sesi: <span id="footerUserId" class="text-slate-600 select-all">Publik Bersama</span></span>
-            </p>
-        </div>
-    </footer>
+        </section>
 
-    <!-- Modal Ubah Nama Mempelai -->
-    <div id="coupleModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
-            <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
-                <h3 class="font-serif font-bold text-lg text-slate-800">Pengaturan Nama Mempelai</h3>
-                <button onclick="closeCoupleModal()" class="text-slate-400 hover:text-slate-600">
-                    <i class="fa-solid fa-xmark text-lg"></i>
+    </main>
+
+    <!-- Bottom Tab Bar Mobile (Gaya App Store iOS - Hanya 2 Menu Utama: Dashboard & Daftar Tamu) -->
+    <nav class="sm:hidden fixed bottom-0 inset-x-0 ios-blur border-t border-black/10 z-30 no-print">
+        <div class="grid grid-cols-2 h-16 max-w-md mx-auto">
+            <button onclick="switchMainTab('dashboard')" id="mobileTabDashboard"
+                class="flex flex-col items-center justify-center gap-1 text-ios-blue font-semibold">
+                <i class="fa-solid fa-chart-pie text-lg"></i>
+                <span class="text-[11px]">Dashboard</span>
+            </button>
+            <button onclick="switchMainTab('guests')" id="mobileTabGuests"
+                class="flex flex-col items-center justify-center gap-1 text-slate-400 font-medium relative">
+                <div class="relative">
+                    <i class="fa-solid fa-users text-lg"></i>
+                    <span id="mobileGuestBadge" class="absolute -top-1.5 -right-4 bg-ios-blue text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full">0</span>
+                </div>
+                <span class="text-[11px]">Daftar Tamu</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ============================================================================ -->
+    <!-- MODAL INPUT / EDIT TAMU + FITUR VOICE RECOGNITION (MIKROFON NAMA & ALAMAT)   -->
+    <!-- ============================================================================ -->
+    <div id="guestFormModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-end sm:items-center justify-center p-0 sm:p-4 no-print">
+        <div class="bg-white rounded-t-[28px] sm:rounded-[28px] max-w-lg w-full p-5 sm:p-6 shadow-2xl max-h-[92vh] overflow-y-auto animate-fade-in">
+            <!-- Handle Bar iOS Sheet (Mobile) -->
+            <div class="w-10 h-1.5 bg-slate-200 rounded-full mx-auto mb-3 sm:hidden"></div>
+
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3.5 mb-4">
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h3 id="formTitle" class="font-extrabold text-lg text-slate-900">Catat Tamu Undangan</h3>
+                        <span id="editModeBadge" class="hidden bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Mode Edit</span>
+                    </div>
+                    <p class="text-xs text-slate-500">Ketuk ikon <i class="fa-solid fa-microphone text-ios-red"></i> untuk mendikte nama atau alamat dengan suara</p>
+                </div>
+                <button type="button" onclick="closeGuestFormModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
-            <form id="coupleSettingsForm" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Judul / Nama Mempelai</label>
-                    <input type="text" id="inputCoupleName" required placeholder="Contoh: Pernikahan Andi & Rina"
-                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:border-wedding-800">
+
+            <!-- Banner Status Rekaman Suara Aktif -->
+            <div id="voiceActiveBanner" class="hidden mb-4 bg-red-50 border border-red-200 text-red-700 px-3.5 py-2.5 rounded-2xl items-center justify-between gap-2 text-xs font-semibold">
+                <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-ios-red animate-ping"></span>
+                    <span id="voiceActiveText">Mendengarkan suara Anda... Silakan ucapkan sekarang</span>
                 </div>
+                <button type="button" onclick="stopVoiceRecognition()" class="bg-red-600 text-white px-2.5 py-1 rounded-lg text-[11px] font-bold">
+                    Selesai
+                </button>
+            </div>
+
+            <form id="giftForm" class="space-y-4">
+                <input type="hidden" id="editDocId" value="">
+
+                <!-- Nama Lengkap Tamu + Tombol Mikrofon Suara -->
                 <div>
-                    <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Subjudul / Tanggal & Lokasi Acara</label>
-                    <input type="text" id="inputEventDate" required placeholder="Contoh: Minggu, 15 November 2026 - Gedung Kartini"
-                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:border-wedding-800">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label for="guestName" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                            Nama Lengkap Tamu <span class="text-ios-red">*</span>
+                        </label>
+                        <span class="text-[11px] text-slate-400">Bisa diketik atau lewat suara</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="relative flex-1">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                                <i class="fa-regular fa-user"></i>
+                            </span>
+                            <input type="text" id="guestName" required placeholder="Contoh: Bpk. Budi Santoso"
+                                class="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-100/90 focus:bg-white border border-slate-200 focus:border-ios-blue text-sm font-medium outline-none transition">
+                        </div>
+                        <button type="button" id="micBtnName" onclick="toggleVoiceInput('guestName', 'micBtnName', 'Nama Tamu')"
+                            title="Input Nama Tamu dengan Suara"
+                            class="w-12 h-11 rounded-2xl bg-blue-50 hover:bg-blue-100 text-ios-blue border border-blue-200/80 flex items-center justify-center transition ios-btn-active flex-shrink-0">
+                            <i class="fa-solid fa-microphone text-base"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" onclick="closeCoupleModal()" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold">Batal</button>
-                    <button type="submit" class="px-4 py-2 rounded-xl bg-wedding-800 hover:bg-wedding-900 text-white text-xs font-semibold">Simpan Perubahan Online</button>
+
+                <!-- Alamat / Instansi + Tombol Mikrofon Suara -->
+                <div>
+                    <div class="flex items-center justify-between mb-1.5">
+                        <label for="guestAddress" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                            Alamat / Instansi <span class="text-ios-red">*</span>
+                        </label>
+                        <span class="text-[11px] text-slate-400">Ketuk mic untuk bicara</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="relative flex-1">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center text-slate-400">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </span>
+                            <input type="text" id="guestAddress" required placeholder="Contoh: Jl. Ahmad Yani / Makassar"
+                                class="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-100/90 focus:bg-white border border-slate-200 focus:border-ios-blue text-sm font-medium outline-none transition">
+                        </div>
+                        <button type="button" id="micBtnAddress" onclick="toggleVoiceInput('guestAddress', 'micBtnAddress', 'Alamat Tamu')"
+                            title="Input Alamat dengan Suara"
+                            class="w-12 h-11 rounded-2xl bg-blue-50 hover:bg-blue-100 text-ios-blue border border-blue-200/80 flex items-center justify-center transition ios-btn-active flex-shrink-0">
+                            <i class="fa-solid fa-microphone text-base"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Nominal Hadiah (Rp) -->
+                <div>
+                    <label for="giftAmountDisplay" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        Nominal Hadiah (Rp) <span class="text-ios-red">*</span>
+                    </label>
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center font-extrabold text-slate-500 text-sm">
+                            Rp
+                        </span>
+                        <input type="text" id="giftAmountDisplay" inputmode="numeric" required placeholder="100.000"
+                            class="w-full pl-10 pr-4 py-3 rounded-2xl bg-slate-100/90 focus:bg-white border border-slate-200 focus:border-ios-blue text-base font-extrabold text-slate-900 outline-none transition">
+                    </div>
+
+                    <!-- Tombol Cepat Nominal -->
+                    <div class="mt-2 flex flex-wrap gap-1.5">
+                        <button type="button" onclick="setQuickAmount(50000)" class="text-xs bg-slate-100 hover:bg-blue-50 hover:text-ios-blue text-slate-700 font-semibold px-3 py-1.5 rounded-xl transition">50 Rb</button>
+                        <button type="button" onclick="setQuickAmount(100000)" class="text-xs bg-slate-100 hover:bg-blue-50 hover:text-ios-blue text-slate-700 font-semibold px-3 py-1.5 rounded-xl transition">100 Rb</button>
+                        <button type="button" onclick="setQuickAmount(150000)" class="text-xs bg-slate-100 hover:bg-blue-50 hover:text-ios-blue text-slate-700 font-semibold px-3 py-1.5 rounded-xl transition">150 Rb</button>
+                        <button type="button" onclick="setQuickAmount(200000)" class="text-xs bg-slate-100 hover:bg-blue-50 hover:text-ios-blue text-slate-700 font-semibold px-3 py-1.5 rounded-xl transition">200 Rb</button>
+                        <button type="button" onclick="setQuickAmount(300000)" class="text-xs bg-slate-100 hover:bg-blue-50 hover:text-ios-blue text-slate-700 font-semibold px-3 py-1.5 rounded-xl transition">300 Rb</button>
+                        <button type="button" onclick="setQuickAmount(500000)" class="text-xs bg-slate-100 hover:bg-blue-50 hover:text-ios-blue text-slate-700 font-semibold px-3 py-1.5 rounded-xl transition">500 Rb</button>
+                        <button type="button" onclick="setQuickAmount(1000000)" class="text-xs bg-slate-100 hover:bg-blue-50 hover:text-ios-blue text-slate-700 font-semibold px-3 py-1.5 rounded-xl transition">1 Juta</button>
+                    </div>
+                </div>
+
+                <!-- Metode & Kategori (2 Kolom) -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label for="giftMethod" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            Metode
+                        </label>
+                        <select id="giftMethod" class="w-full px-3 py-3 rounded-2xl bg-slate-100/90 border border-slate-200 focus:border-ios-blue text-sm font-medium outline-none">
+                            <option value="Amplop Tunai">Amplop Tunai</option>
+                            <option value="Transfer / QRIS">Transfer / QRIS</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="guestCategory" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                            Kategori Tamu
+                        </label>
+                        <select id="guestCategory" class="w-full px-3 py-3 rounded-2xl bg-slate-100/90 border border-slate-200 focus:border-ios-blue text-sm font-medium outline-none">
+                            <option value="Umum / Kerabat">Umum / Kerabat</option>
+                            <option value="Keluarga">Keluarga</option>
+                            <option value="Teman / Sahabat">Teman / Sahabat</option>
+                            <option value="Rekan Kerja">Rekan Kerja</option>
+                            <option value="Tetangga">Tetangga</option>
+                            <option value="VIP">Tamu VIP</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Catatan Opsional -->
+                <div>
+                    <label for="guestNotes" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                        Catatan / Nomor Amplop (Opsional)
+                    </label>
+                    <input type="text" id="guestNotes" placeholder="Contoh: Amplop #012 / Titipan Keluarga"
+                        class="w-full px-3.5 py-2.5 rounded-2xl bg-slate-100/90 focus:bg-white border border-slate-200 focus:border-ios-blue text-sm outline-none transition">
+                </div>
+
+                <!-- Tombol Simpan -->
+                <div class="pt-2 flex gap-2.5">
+                    <button type="button" onclick="closeGuestFormModal()"
+                        class="px-5 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-sm transition">
+                        Batal
+                    </button>
+                    <button type="submit" id="submitBtn"
+                        class="flex-1 bg-ios-blue hover:bg-blue-600 text-white font-bold py-3.5 px-5 rounded-2xl shadow-lg shadow-blue-500/25 transition ios-btn-active flex items-center justify-center gap-2 text-sm">
+                        <i class="fa-solid fa-check"></i>
+                        <span id="submitBtnText">Simpan Data Tamu</span>
+                    </button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modal Konfirmasi Hapus (Tanpa confirm() bawaan browser) -->
-    <div id="deleteModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-100 text-center">
-            <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center mx-auto mb-3 text-xl">
+    <!-- Modal Pengaturan Nama Mempelai -->
+    <div id="coupleModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-[24px] max-w-md w-full p-6 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+                <h3 class="font-extrabold text-base text-slate-900">Ubah Nama Mempelai & Acara</h3>
+                <button onclick="closeCoupleModal()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form id="coupleSettingsForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Judul / Nama Mempelai</label>
+                    <input type="text" id="inputCoupleName" required placeholder="Contoh: Pernikahan Andi & Rina"
+                        class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-sm outline-none focus:bg-white focus:border-ios-blue">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Tanggal / Lokasi Acara</label>
+                    <input type="text" id="inputEventDate" required placeholder="Contoh: Minggu, 15 November 2026"
+                        class="w-full px-3.5 py-2.5 rounded-xl bg-slate-100 border border-slate-200 text-sm outline-none focus:bg-white focus:border-ios-blue">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeCoupleModal()" class="px-4 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">Batal</button>
+                    <button type="submit" class="px-4 py-2.5 rounded-xl bg-ios-blue text-white text-xs font-bold">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div id="deleteModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-[24px] max-w-xs w-full p-6 shadow-2xl text-center">
+            <div class="w-12 h-12 rounded-full bg-red-50 text-ios-red flex items-center justify-center mx-auto mb-3 text-xl">
                 <i class="fa-solid fa-trash-can"></i>
             </div>
-            <h3 class="font-bold text-base text-slate-800 mb-1">Hapus Data Tamu Ini?</h3>
-            <p id="deleteModalDesc" class="text-xs text-slate-500 mb-5">Data yang dihapus akan hilang dari daftar online semua pengguna.</p>
-            <div class="flex gap-2 justify-center">
-                <button onclick="closeDeleteModal()" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition">
+            <h3 class="font-extrabold text-base text-slate-900 mb-1">Hapus Data Tamu?</h3>
+            <p id="deleteModalDesc" class="text-xs text-slate-500 mb-5">Data yang dihapus akan hilang dari daftar semua perangkat.</p>
+            <div class="flex gap-2">
+                <button onclick="closeDeleteModal()" class="flex-1 py-2.5 px-4 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold">
                     Batal
                 </button>
-                <button id="confirmDeleteBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition">
-                    Ya, Hapus
+                <button id="confirmDeleteBtn" class="flex-1 py-2.5 px-4 rounded-xl bg-ios-red text-white text-xs font-bold">
+                    Hapus
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Modal Panduan Upload GitHub Pages & Setup Database -->
-    <div id="githubGuideModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-2xl border border-slate-100 max-h-[90vh] overflow-y-auto">
+    <!-- Modal Panduan Install App di HP -->
+    <div id="installGuideModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-[24px] max-w-sm w-full p-6 shadow-2xl">
             <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-fire-flame-curved text-xl text-amber-500"></i>
-                    <h3 class="font-serif font-bold text-lg text-slate-800">Pengaturan 1 Database Bersama (<code class="text-xs font-mono bg-amber-50 text-amber-900 px-2 py-0.5 rounded">uangpassolo-33f3b</code>)</h3>
-                </div>
-                <button onclick="closeGithubGuideModal()" class="text-slate-400 hover:text-slate-600">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-            <div class="space-y-4 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3.5 text-emerald-900">
-                    <p class="font-semibold mb-1"><i class="fa-solid fa-database mr-1"></i> Sistem 1 Database Terpusat Aktif!</p>
-                    <p class="text-xs">Aplikasi ini sekarang dikunci hanya ke satu database (<strong>uangpassolo-33f3b</strong>). Setiap orang yang membuka link aplikasi dari HP atau perangkat mana pun akan langsung melihat daftar tamu dan nominal yang sama persis.</p>
-                </div>
-
-                <!-- Copy-Paste Rules Firestore Terbuka (Semua Orang Bisa Melihat & Mencatat) -->
-                <div class="border border-slate-200 rounded-xl overflow-hidden">
-                    <div class="bg-slate-100 px-4 py-2.5 border-b border-slate-200 flex justify-between items-center">
-                        <span class="font-bold text-xs text-slate-800">Pasang Rules Ini di Firestore Database &rarr; Tab "Rules"</span>
-                        <button onclick="copyCodeFromElement('firestoreRulesBlock', 'Firestore Rules')" class="bg-wedding-800 hover:bg-wedding-900 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
-                            <i class="fa-regular fa-copy"></i> Salin Rules
-                        </button>
-                    </div>
-                    <pre id="firestoreRulesBlock" class="bg-slate-900 text-emerald-300 p-4 text-xs font-mono overflow-x-auto leading-relaxed">rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Mengizinkan semua orang yang membuka aplikasi melihat & menginput ke 1 database yang sama
-    match /{document=**} {
-      allow read, write: if true;
-    }
-  }
-}</pre>
-                </div>
-
-                <div class="bg-amber-50/70 border border-amber-200 rounded-xl p-3.5 text-xs text-slate-700 space-y-1">
-                    <p class="font-bold text-slate-800">Cara Memasang Rules di Firebase Console:</p>
-                    <ol class="list-decimal list-inside space-y-1">
-                        <li>Buka <a href="https://console.firebase.google.com/project/uangpassolo-33f3b/firestore/rules" target="_blank" class="text-amber-800 font-semibold underline">Firebase Console &rarr; Firestore Database &rarr; Rules</a>.</li>
-                        <li>Hapus kode lama, tempelkan (Paste) kode Rules di atas, lalu klik tombol <strong>Publish</strong>.</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="mt-6 flex justify-end">
-                <button onclick="closeGithubGuideModal()" class="px-5 py-2.5 rounded-xl bg-wedding-800 hover:bg-wedding-900 text-white text-xs font-semibold">
-                    Mengerti & Tutup
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal PWA Kit: Kode manifest.json, sw.js, & Generator Icon 192px / 512px -->
-    <div id="pwaKitModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden items-center justify-center p-3 sm:p-4">
-        <div class="bg-white rounded-2xl max-w-4xl w-full p-5 sm:p-6 shadow-2xl border border-slate-200 max-h-[92vh] overflow-y-auto">
-            <!-- Header Modal -->
-            <div class="flex justify-between items-start border-b border-slate-200 pb-4 mb-5">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-wedding-900 text-amber-400 flex items-center justify-center text-lg shadow">
-                        <i class="fa-solid fa-mobile-screen-button"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-serif font-bold text-lg sm:text-xl text-slate-800">PWA Kit: <code class="text-sm font-mono bg-slate-100 px-1.5 py-0.5 rounded">manifest.json</code>, <code class="text-sm font-mono bg-slate-100 px-1.5 py-0.5 rounded">sw.js</code> & Icon Aplikasi</h3>
-                        <p class="text-xs text-slate-500">Unduh keempat file di bawah ini dan letakkan satu folder dengan <code class="font-mono">index.html</code> di GitHub Anda</p>
-                    </div>
-                </div>
-                <button onclick="closePwaKitModal()" class="text-slate-400 hover:text-slate-700 p-1">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-
-            <div class="space-y-6">
-                <!-- 1. BAGIAN ICON 192x192 PX & 512x512 PX -->
-                <div class="bg-amber-50/60 border border-amber-200/80 rounded-2xl p-4 sm:p-5">
-                    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
-                        <div>
-                            <h4 class="font-bold text-sm sm:text-base text-slate-800 flex items-center gap-2">
-                                <i class="fa-solid fa-icons text-amber-600"></i>
-                                1. Icon Aplikasi Resmi (<code class="font-mono text-xs">icon-192.png</code> & <code class="font-mono text-xs">icon-512.png</code>)
-                            </h4>
-                            <p class="text-xs text-slate-600">Digenerate otomatis dengan resolusi presisi 192×192 piksel dan 512×512 piksel siap pakai untuk Android & iOS.</p>
-                        </div>
-                        <button onclick="downloadAllPwaFiles()" class="bg-wedding-800 hover:bg-wedding-900 text-amber-300 text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-2">
-                            <i class="fa-solid fa-download"></i>
-                            <span>Unduh Semua 4 File PWA Sekaligus</span>
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <!-- Card Icon 192x192 -->
-                        <div class="bg-white rounded-xl p-4 border border-slate-200 flex items-center gap-4 shadow-sm">
-                            <canvas id="canvasIcon192" width="192" height="192" class="w-20 h-20 rounded-2xl shadow-md border border-slate-200 flex-shrink-0"></canvas>
-                            <div class="flex-1 min-w-0">
-                                <span class="text-[11px] font-bold uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-md">192 × 192 px</span>
-                                <h5 class="font-bold text-slate-800 text-sm mt-1 truncate">icon-192.png</h5>
-                                <p class="text-xs text-slate-500 mb-2.5">Icon Home Screen HP & Apple Touch Icon</p>
-                                <button onclick="downloadCanvasIcon(192, 'icon-192.png')" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
-                                    <i class="fa-solid fa-download"></i> Unduh icon-192.png
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Card Icon 512x512 -->
-                        <div class="bg-white rounded-xl p-4 border border-slate-200 flex items-center gap-4 shadow-sm">
-                            <canvas id="canvasIcon512" width="512" height="512" class="w-20 h-20 rounded-2xl shadow-md border border-slate-200 flex-shrink-0"></canvas>
-                            <div class="flex-1 min-w-0">
-                                <span class="text-[11px] font-bold uppercase tracking-wider bg-amber-100 text-amber-800 px-2 py-0.5 rounded-md">512 × 512 px</span>
-                                <h5 class="font-bold text-slate-800 text-sm mt-1 truncate">icon-512.png</h5>
-                                <p class="text-xs text-slate-500 mb-2.5">Splash Screen PWA & High-DPI Icon</p>
-                                <button onclick="downloadCanvasIcon(512, 'icon-512.png')" class="w-full bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
-                                    <i class="fa-solid fa-download"></i> Unduh icon-512.png
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 2. BAGIAN KODE MANIFEST.JSON -->
-                <div class="border border-slate-200 rounded-2xl overflow-hidden">
-                    <div class="bg-slate-100 px-4 py-3 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">
-                        <div>
-                            <h4 class="font-bold text-sm text-slate-800 flex items-center gap-2">
-                                <i class="fa-solid fa-file-lines text-emerald-700"></i>
-                                2. File <code class="font-mono text-xs bg-white px-2 py-0.5 rounded border">manifest.json</code>
-                            </h4>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="copyCodeFromElement('manifestCodeBlock', 'manifest.json')" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
-                                <i class="fa-regular fa-copy"></i> Salin Kode
-                            </button>
-                            <button onclick="downloadTextFile('manifest.json', getManifestJsonString(), 'application/json')" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-download"></i> Unduh manifest.json
-                            </button>
-                        </div>
-                    </div>
-                    <pre id="manifestCodeBlock" class="bg-slate-900 text-emerald-300 p-4 text-xs font-mono overflow-x-auto leading-relaxed max-h-60"></pre>
-                </div>
-
-                <!-- 3. BAGIAN KODE SW.JS (SERVICE WORKER) -->
-                <div class="border border-slate-200 rounded-2xl overflow-hidden">
-                    <div class="bg-slate-100 px-4 py-3 border-b border-slate-200 flex flex-wrap justify-between items-center gap-2">
-                        <div>
-                            <h4 class="font-bold text-sm text-slate-800 flex items-center gap-2">
-                                <i class="fa-solid fa-gears text-amber-600"></i>
-                                3. File <code class="font-mono text-xs bg-white px-2 py-0.5 rounded border">sw.js</code> (Service Worker Offline & Caching)
-                            </h4>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="copyCodeFromElement('swCodeBlock', 'sw.js')" class="bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
-                                <i class="fa-regular fa-copy"></i> Salin Kode
-                            </button>
-                            <button onclick="downloadTextFile('sw.js', getServiceWorkerString(), 'application/javascript')" class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold px-3 py-1.5 rounded-lg transition flex items-center gap-1.5">
-                                <i class="fa-solid fa-download"></i> Unduh sw.js
-                            </button>
-                        </div>
-                    </div>
-                    <pre id="swCodeBlock" class="bg-slate-900 text-amber-200 p-4 text-xs font-mono overflow-x-auto leading-relaxed max-h-64"></pre>
-                </div>
-
-                <!-- 4. STRUKTUR FOLDER GITHUB & PANDUAN INSTALL HP -->
-                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs text-slate-600 space-y-2">
-                    <h5 class="font-bold text-slate-800 flex items-center gap-1.5">
-                        <i class="fa-solid fa-folder-tree text-wedding-800"></i>
-                        Struktur Susunan File di Repository GitHub Anda:
-                    </h5>
-                    <p>Pastikan kelima file berikut berada di dalam satu folder utama (root) repository GitHub Anda:</p>
-                    <div class="bg-white p-3 rounded-xl border border-slate-200 font-mono text-[11px] text-slate-700">
-                        📁 repository-github-anda/<br>
-                        ├── 📄 index.html &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-slate-400">(File utama aplikasi ini)</span><br>
-                        ├── 📄 manifest.json &nbsp;&nbsp;&nbsp;<span class="text-slate-400">(Konfigurasi instalasi PWA di HP)</span><br>
-                        ├── 📄 sw.js &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="text-slate-400">(Service Worker agar bisa di-install & cepat)</span><br>
-                        ├── 🖼️ icon-192.png &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-slate-400">(Icon ukuran 192x192 piksel)</span><br>
-                        └── 🖼️ icon-512.png &nbsp;&nbsp;&nbsp;&nbsp;<span class="text-slate-400">(Icon ukuran 512x512 piksel)</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-5 pt-3 border-t border-slate-100 flex justify-end">
-                <button onclick="closePwaKitModal()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold">
-                    Tutup Jendela PWA
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Panduan Install di HP (Muncul jika browser belum memicu prompt otomatis / iOS Safari) -->
-    <div id="installGuideModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
-            <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
-                <h3 class="font-serif font-bold text-lg text-slate-800 flex items-center gap-2">
-                    <i class="fa-solid fa-mobile-screen text-amber-600"></i>
-                    Cara Install Aplikasi di HP
+                <h3 class="font-extrabold text-base text-slate-900 flex items-center gap-2">
+                    <i class="fa-solid fa-mobile-screen-button text-ios-blue"></i>
+                    <span>Install ke Layar Utama HP</span>
                 </h3>
-                <button onclick="closeInstallGuideModal()" class="text-slate-400 hover:text-slate-600">
-                    <i class="fa-solid fa-xmark text-lg"></i>
+                <button onclick="closeInstallGuideModal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
-            <div class="space-y-4 text-xs sm:text-sm text-slate-600">
-                <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900">
-                    <p class="font-bold mb-1"><i class="fa-brands fa-android mr-1"></i> Pengguna HP Android (Chrome / Edge):</p>
-                    <ol class="list-decimal list-inside space-y-1 text-xs">
-                        <li>Buka link GitHub Pages aplikasi ini di browser <strong>Google Chrome</strong>.</li>
-                        <li>Ketuk ikon <strong>Titik Tiga (⋮)</strong> di pojok kanan atas browser.</li>
-                        <li>Pilih menu <strong>"Tambahkan ke layar utama"</strong> atau <strong>"Instal aplikasi"</strong>.</li>
-                    </ol>
+            <div class="space-y-3 text-xs text-slate-600">
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                    <p class="font-bold text-slate-900 mb-1"><i class="fa-brands fa-android text-emerald-600 mr-1"></i> Pengguna Android (Chrome):</p>
+                    <p>Ketuk ikon <strong>Titik Tiga (⋮)</strong> di pojok kanan atas browser, lalu pilih <strong>"Instal aplikasi"</strong> atau <strong>"Tambahkan ke layar utama"</strong>.</p>
                 </div>
-                <div class="p-3.5 rounded-xl bg-slate-100 border border-slate-200 text-slate-800">
-                    <p class="font-bold mb-1"><i class="fa-brands fa-apple mr-1"></i> Pengguna iPhone / iOS (Safari):</p>
-                    <ol class="list-decimal list-inside space-y-1 text-xs">
-                        <li>Buka halaman aplikasi ini menggunakan browser <strong>Safari</strong>.</li>
-                        <li>Ketuk tombol <strong>Bagikan (Share)</strong> <i class="fa-solid fa-arrow-up-from-bracket mx-0.5"></i> di bagian bawah layar.</li>
-                        <li>Geser ke bawah dan pilih <strong>"Tambah ke Layar Utama" (Add to Home Screen)</strong>.</li>
-                    </ol>
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+                    <p class="font-bold text-slate-900 mb-1"><i class="fa-brands fa-apple text-slate-800 mr-1"></i> Pengguna iPhone (Safari):</p>
+                    <p>Ketuk tombol <strong>Bagikan (Share)</strong> di bawah layar Safari, lalu pilih <strong>"Tambah ke Layar Utama"</strong>.</p>
                 </div>
             </div>
-            <div class="mt-5 flex justify-end gap-2">
-                <button onclick="closeInstallGuideModal(); openPwaKitModal();" class="px-4 py-2 rounded-xl bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-semibold">
-                    Lihat File PWA & Icon
-                </button>
-                <button onclick="closeInstallGuideModal()" class="px-4 py-2 rounded-xl bg-wedding-800 hover:bg-wedding-900 text-white text-xs font-semibold">
+            <div class="mt-5">
+                <button onclick="closeInstallGuideModal()" class="w-full py-2.5 rounded-xl bg-ios-blue text-white text-xs font-bold">
                     Mengerti
                 </button>
             </div>
@@ -686,7 +644,7 @@ service cloud.firestore {
     </div>
 
     <!-- Toast Notification Container -->
-    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-xs w-full pointer-events-none no-print"></div>
+    <div id="toastContainer" class="fixed top-16 right-4 z-50 flex flex-col gap-2 max-w-xs w-full pointer-events-none no-print"></div>
 
     <!-- Firebase SDK & Application Logic -->
     <script type="module">
@@ -696,7 +654,6 @@ service cloud.firestore {
 
         // ============================================================================
         // KONFIGURASI 1 DATABASE TERPUSAT MILIK ANDA (uangpassolo-33f3b)
-        // Semua pengguna di perangkat mana pun membaca & menulis ke lokasi yang sama
         // ============================================================================
         const firebaseConfig = {
             apiKey: "AIzaSyA_MOGHYjNgJReNw2p5rM20oOLw95K8v0E",
@@ -707,10 +664,8 @@ service cloud.firestore {
             appId: "1:456483634958:web:8de0b49fccf2cc1ac3e15f"
         };
 
-        // ID ruangan/koleksi tunggal agar seluruh orang yang membuka aplikasi melihat data yang sama
         const appId = 'uangpassolo-utama';
 
-        // State Aplikasi di Memori
         let app;
         let db;
         let auth;
@@ -719,6 +674,7 @@ service cloud.firestore {
         let isPrivacyHidden = false;
         let pendingDeleteId = null;
         let isListenerStarted = false;
+        let activeTab = 'dashboard';
 
         // Format Angka ke Rupiah
         const formatRupiah = (number) => {
@@ -731,65 +687,221 @@ service cloud.firestore {
             }).format(num);
         };
 
-        // Format Angka Ribuan (100.000) untuk Input
         const formatThousandDots = (val) => {
             const clean = String(val).replace(/\D/g, '');
             if (!clean) return '';
             return Number(clean).toLocaleString('id-ID');
         };
 
-        // Parse Angka dari Format Titik Ribuan
         const parseRawNumber = (formattedStr) => {
             const clean = String(formattedStr).replace(/\D/g, '');
             return clean ? parseInt(clean, 10) : 0;
         };
 
-        // Tampilkan Notifikasi Toast (Pengganti alert())
+        const escapeHtml = (str) => {
+            return String(str || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        };
+
+        // Toast Notifikasi ala iOS Banner
         window.showToast = (message, type = 'success') => {
             const container = document.getElementById('toastContainer');
             const toast = document.createElement('div');
-            const bgClass = type === 'error' ? 'bg-red-800 border-red-600' : 'bg-wedding-900 border-amber-400/50';
-            const iconClass = type === 'error' ? 'fa-circle-exclamation text-red-300' : 'fa-circle-check text-amber-400';
+            const bgClass = type === 'error' ? 'bg-red-600 text-white' : 'bg-slate-900/95 text-white';
+            const iconClass = type === 'error' ? 'fa-circle-exclamation text-white' : 'fa-circle-check text-emerald-400';
 
-            toast.className = `${bgClass} text-white px-4 py-3 rounded-xl shadow-xl border flex items-center gap-3 text-xs font-medium pointer-events-auto transition-all duration-300 transform translate-y-0 opacity-100`;
+            toast.className = `${bgClass} backdrop-blur-md px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2.5 text-xs font-semibold pointer-events-auto transition-all duration-300`;
             toast.innerHTML = `
-                <i class="fa-solid ${iconClass} text-base"></i>
+                <i class="fa-solid ${iconClass} text-sm"></i>
                 <span class="flex-1">${message}</span>
             `;
             container.appendChild(toast);
 
             setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-2');
+                toast.classList.add('opacity-0', '-translate-y-2');
                 setTimeout(() => toast.remove(), 300);
-            }, 3500);
+            }, 3200);
         };
 
-        // Update Indikator Status Koneksi
-        const setSyncStatus = (status, text) => {
-            const dot = document.getElementById('syncDot');
-            const label = document.getElementById('syncText');
-            label.textContent = text;
-            dot.className = 'w-2.5 h-2.5 rounded-full ';
-            if (status === 'online') {
-                dot.className += 'bg-emerald-400';
-            } else if (status === 'connecting') {
-                dot.className += 'bg-amber-400 animate-pulse';
+        // ============================================================================
+        // NAVIGASI 2 MENU UTAMA (DASHBOARD & DAFTAR TAMU)
+        // ============================================================================
+        window.switchMainTab = (tabName) => {
+            activeTab = tabName;
+            const viewDashboard = document.getElementById('viewDashboard');
+            const viewGuests = document.getElementById('viewGuests');
+
+            const desktopTabDashboard = document.getElementById('desktopTabDashboard');
+            const desktopTabGuests = document.getElementById('desktopTabGuests');
+            const mobileTabDashboard = document.getElementById('mobileTabDashboard');
+            const mobileTabGuests = document.getElementById('mobileTabGuests');
+
+            if (tabName === 'dashboard') {
+                viewDashboard.classList.remove('hidden');
+                viewGuests.classList.add('hidden');
+
+                desktopTabDashboard.className = 'px-5 py-1.5 rounded-xl text-xs font-bold transition-all bg-white text-slate-900 shadow-sm flex items-center gap-1.5';
+                desktopTabGuests.className = 'px-5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1.5';
+
+                mobileTabDashboard.className = 'flex flex-col items-center justify-center gap-1 text-ios-blue font-semibold';
+                mobileTabGuests.className = 'flex flex-col items-center justify-center gap-1 text-slate-400 font-medium relative';
             } else {
-                dot.className += 'bg-red-400';
+                viewDashboard.classList.add('hidden');
+                viewGuests.classList.remove('hidden');
+
+                desktopTabGuests.className = 'px-5 py-1.5 rounded-xl text-xs font-bold transition-all bg-white text-slate-900 shadow-sm flex items-center gap-1.5';
+                desktopTabDashboard.className = 'px-5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-600 hover:text-slate-900 flex items-center gap-1.5';
+
+                mobileTabGuests.className = 'flex flex-col items-center justify-center gap-1 text-ios-blue font-semibold relative';
+                mobileTabDashboard.className = 'flex flex-col items-center justify-center gap-1 text-slate-400 font-medium';
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // ============================================================================
+        // FITUR INPUT SUARA (SPEECH-TO-TEXT BAHASA INDONESIA) UNTUK NAMA & ALAMAT
+        // ============================================================================
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        let recognitionInstance = null;
+        let currentVoiceInputId = null;
+        let currentVoiceBtnId = null;
+
+        // Rapikan huruf kapital di awal setiap kata (Title Case) untuk Nama & Alamat
+        const toTitleCaseWords = (str) => {
+            return str.replace(/\b\w/g, (char) => char.toUpperCase());
+        };
+
+        window.stopVoiceRecognition = () => {
+            if (recognitionInstance) {
+                try {
+                    recognitionInstance.stop();
+                } catch (e) {
+                    console.warn(e);
+                }
+            }
+            resetMicVisuals();
+        };
+
+        const resetMicVisuals = () => {
+            const banner = document.getElementById('voiceActiveBanner');
+            banner.classList.add('hidden');
+            banner.classList.remove('flex');
+
+            ['micBtnName', 'micBtnAddress'].forEach((btnId) => {
+                const btn = document.getElementById(btnId);
+                if (btn) {
+                    btn.classList.remove('mic-listening');
+                    btn.innerHTML = '<i class="fa-solid fa-microphone text-base"></i>';
+                }
+            });
+
+            currentVoiceInputId = null;
+            currentVoiceBtnId = null;
+        };
+
+        window.toggleVoiceInput = (inputId, btnId, fieldLabel) => {
+            if (!SpeechRecognition) {
+                showToast("Browser di perangkat ini belum mendukung fitur input suara. Gunakan Google Chrome atau Safari.", "error");
+                return;
+            }
+
+            // Jika tombol mikrofon yang sama diklik saat sedang merekam, hentikan rekaman
+            if (currentVoiceInputId === inputId && recognitionInstance) {
+                stopVoiceRecognition();
+                return;
+            }
+
+            // Hentikan sesi sebelumnya jika ada
+            if (recognitionInstance) {
+                try {
+                    recognitionInstance.abort();
+                } catch (e) {}
+            }
+
+            recognitionInstance = new SpeechRecognition();
+            recognitionInstance.lang = 'id-ID';
+            recognitionInstance.interimResults = false;
+            recognitionInstance.maxAlternatives = 1;
+
+            currentVoiceInputId = inputId;
+            currentVoiceBtnId = btnId;
+
+            const activeBtn = document.getElementById(btnId);
+            const banner = document.getElementById('voiceActiveBanner');
+            const bannerText = document.getElementById('voiceActiveText');
+
+            recognitionInstance.onstart = () => {
+                resetMicVisuals();
+                currentVoiceInputId = inputId;
+                currentVoiceBtnId = btnId;
+
+                if (activeBtn) {
+                    activeBtn.classList.add('mic-listening');
+                    activeBtn.innerHTML = '<i class="fa-solid fa-stop text-base"></i>';
+                }
+                bannerText.textContent = `Mendengarkan ${fieldLabel}... Silakan ucapkan sekarang`;
+                banner.classList.remove('hidden');
+                banner.classList.add('flex');
+            };
+
+            recognitionInstance.onresult = (event) => {
+                const transcript = event.results[0][0].transcript.trim();
+                if (transcript) {
+                    const inputEl = document.getElementById(inputId);
+                    const formattedText = toTitleCaseWords(transcript);
+                    // Jika sudah ada isi sebelumnya, tambahkan spasi; jika kosong, langsung isi
+                    inputEl.value = inputEl.value.trim()
+                        ? `${inputEl.value.trim()} ${formattedText}`
+                        : formattedText;
+                    inputEl.focus();
+                    showToast(`${fieldLabel} berhasil ditangkap: "${formattedText}"`);
+                }
+            };
+
+            recognitionInstance.onerror = (event) => {
+                console.warn("Speech recognition error:", event.error);
+                if (event.error === 'not-allowed') {
+                    showToast("Izin mikrofon ditolak. Mohon izinkan akses mikrofon di browser HP Anda.", "error");
+                } else if (event.error === 'no-speech') {
+                    showToast("Suara tidak terdengar. Silakan ketuk mikrofon dan coba lagi.", "error");
+                }
+                resetMicVisuals();
+            };
+
+            recognitionInstance.onend = () => {
+                resetMicVisuals();
+            };
+
+            try {
+                recognitionInstance.start();
+            } catch (err) {
+                console.error(err);
+                resetMicVisuals();
             }
         };
 
         // ============================================================================
-        // INISIALISASI KONEKSI 1 DATABASE TERPUSAT & REALTIME LISTENER
+        // KONEKSI FIREBASE REALTIME (1 DATABASE TERPUSAT)
         // ============================================================================
+        const setSyncStatus = (online, text) => {
+            const dot = document.getElementById('syncDot');
+            const label = document.getElementById('syncText');
+            label.textContent = text;
+            dot.className = online
+                ? 'w-2 h-2 rounded-full bg-emerald-500'
+                : 'w-2 h-2 rounded-full bg-amber-500 animate-pulse';
+        };
+
         const initApplication = async () => {
             try {
                 app = initializeApp(firebaseConfig);
                 db = getFirestore(app);
                 auth = getAuth(app);
 
-                // Coba login anonim bila fitur Anonymous Auth aktif di Firebase Console,
-                // namun tetap lanjutkan ke database bersama meskipun tidak diaktifkan.
                 try {
                     if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
                         await signInWithCustomToken(auth, __initial_auth_token);
@@ -797,74 +909,47 @@ service cloud.firestore {
                         await signInAnonymously(auth);
                     }
                 } catch (authWarn) {
-                    console.warn("Info: Login anonim dilewati, menggunakan akses publik langsung ke Firestore.");
+                    console.warn("Menggunakan akses publik langsung ke database terpusat.");
                 }
 
-                currentUser = auth.currentUser || { uid: 'akses-publik-bersama' };
-                document.getElementById('footerUserId').textContent = currentUser.uid;
-                setSyncStatus('online', 'Database Bersama Aktif');
-
-                // Jalankan listener real-time ke koleksi tunggal
+                currentUser = auth.currentUser || { uid: 'publik-bersama' };
+                setSyncStatus(true, 'Live');
                 setupRealtimeListeners();
 
                 onAuthStateChanged(auth, (user) => {
-                    if (user) {
-                        currentUser = user;
-                        document.getElementById('footerUserId').textContent = user.uid;
-                    }
+                    if (user) currentUser = user;
                 });
             } catch (error) {
                 console.error("Error inisialisasi Firebase:", error);
-                setSyncStatus('offline', 'Gagal Terhubung');
+                setSyncStatus(false, 'Offline');
             }
         };
 
-        // Listener Real-Time ke Koleksi Publik Tunggal
         const setupRealtimeListeners = () => {
             if (!currentUser || isListenerStarted) return;
             isListenerStarted = true;
 
-            // Semua perangkat membaca dari path koleksi tunggal yang sama persis
             const giftsCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'wedding_gifts');
             const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'wedding_settings', 'header_info');
 
-            // 1. Listen Data Tamu & Hadiah
             onSnapshot(
                 giftsCollectionRef,
                 (snapshot) => {
                     const items = [];
                     snapshot.forEach((docSnap) => {
-                        items.push({
-                            id: docSnap.id,
-                            ...docSnap.data()
-                        });
+                        items.push({ id: docSnap.id, ...docSnap.data() });
                     });
                     guestsData = items;
-                    setSyncStatus('online', 'Live Sinkron (Semua Perangkat)');
-                    updateSummaryStats();
+                    setSyncStatus(true, 'Live');
+                    updateDashboardAndStats();
                     renderGuestList();
                 },
                 (error) => {
-                    console.error("Gagal memuat data tamu:", error);
-                    setSyncStatus('offline', 'Periksa Rules Firestore');
-                    document.getElementById('guestTableBody').innerHTML = `
-                        <tr>
-                            <td colspan="5" class="py-10 px-4 text-center text-slate-600">
-                                <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center mx-auto mb-2 text-lg">
-                                    <i class="fa-solid fa-lock"></i>
-                                </div>
-                                <p class="font-bold text-slate-800 mb-1">Akses Database Perlu Diizinkan di Firebase Console</p>
-                                <p class="text-xs text-slate-500 max-w-md mx-auto mb-3">Agar semua orang bisa melihat dan mengisi data yang sama, salin Rules Firestore melalui tombol di bawah ini ke Firebase Console Anda.</p>
-                                <button onclick="openGithubGuideModal()" class="bg-wedding-800 hover:bg-wedding-900 text-white text-xs font-semibold px-4 py-2 rounded-xl shadow transition">
-                                    <i class="fa-solid fa-shield-halved mr-1"></i> Lihat & Salin Rules Firebase
-                                </button>
-                            </td>
-                        </tr>
-                    `;
+                    console.error("Gagal memuat data:", error);
+                    setSyncStatus(false, ' Gangguan Koneksi');
                 }
             );
 
-            // 2. Listen Pengaturan Nama Mempelai
             onSnapshot(
                 settingsDocRef,
                 (docSnap) => {
@@ -881,44 +966,115 @@ service cloud.firestore {
                     }
                 },
                 (error) => {
-                    console.error("Gagal memuat pengaturan mempelai:", error);
+                    console.warn("Gagal memuat header:", error);
                 }
             );
         };
 
         // ============================================================================
-        // KALKULASI STATISTIK & RENDER TABEL
+        // UPDATE DASHBOARD & DAFTAR TAMU
         // ============================================================================
-        const updateSummaryStats = () => {
+        const updateDashboardAndStats = () => {
             const totalGuests = guestsData.length;
             const totalAmount = guestsData.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
             const avgAmount = totalGuests > 0 ? Math.round(totalAmount / totalGuests) : 0;
             const highestGift = totalGuests > 0 ? Math.max(...guestsData.map(i => Number(i.amount) || 0)) : 0;
 
-            const cashCount = guestsData.filter(i => i.method !== 'Transfer / QRIS').length;
-            const transferCount = guestsData.filter(i => i.method === 'Transfer / QRIS').length;
+            const cashItems = guestsData.filter(i => i.method !== 'Transfer / QRIS');
+            const transferItems = guestsData.filter(i => i.method === 'Transfer / QRIS');
+            const cashTotal = cashItems.reduce((sum, i) => sum + (Number(i.amount) || 0), 0);
+            const transferTotal = transferItems.reduce((sum, i) => sum + (Number(i.amount) || 0), 0);
 
-            document.getElementById('statTotalGuests').innerHTML = `${totalGuests} <span class="text-base font-normal text-slate-500">Tamu</span>`;
-            document.getElementById('statMethodBreakdown').textContent = `Amplop Tunai: ${cashCount} • Transfer/QRIS: ${transferCount}`;
+            document.getElementById('navGuestCountBadge').textContent = totalGuests;
+            document.getElementById('mobileGuestBadge').textContent = totalGuests;
+            document.getElementById('statTotalGuests').textContent = `${totalGuests} Orang`;
+            document.getElementById('statCashCount').textContent = `${cashItems.length} Tamu`;
+            document.getElementById('statTransferCount').textContent = `${transferItems.length} Tamu`;
 
             if (isPrivacyHidden) {
                 document.getElementById('statTotalAmount').textContent = 'Rp ••••••••';
-                document.getElementById('statHighestGift').textContent = 'Tertinggi: Rp ••••••';
-                document.getElementById('statAverageAmount').textContent = 'Rp ••••••••';
+                document.getElementById('statHighestGift').textContent = 'Hadiah Tertinggi: Rp ••••••';
+                document.getElementById('statAverageAmount').textContent = 'Rp ••••••';
+                document.getElementById('statCashAmount').textContent = 'Rp ••••••';
+                document.getElementById('statTransferAmount').textContent = 'Rp ••••••';
             } else {
                 document.getElementById('statTotalAmount').textContent = formatRupiah(totalAmount);
-                document.getElementById('statHighestGift').textContent = `Tertinggi: ${formatRupiah(highestGift)}`;
+                document.getElementById('statHighestGift').textContent = `Hadiah Tertinggi: ${formatRupiah(highestGift)}`;
                 document.getElementById('statAverageAmount').textContent = formatRupiah(avgAmount);
+                document.getElementById('statCashAmount').textContent = formatRupiah(cashTotal);
+                document.getElementById('statTransferAmount').textContent = formatRupiah(transferTotal);
             }
 
             if (totalGuests > 0) {
                 const latestTimestamp = Math.max(...guestsData.map(i => i.updatedAt || i.createdAt || 0));
                 if (latestTimestamp > 0) {
-                    const dateStr = new Date(latestTimestamp).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-                    document.getElementById('statLastUpdated').innerHTML = `<i class="fa-solid fa-bolt text-amber-500"></i> Update terakhir pukul ${dateStr}`;
+                    const timeStr = new Date(latestTimestamp).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                    document.getElementById('statLastUpdated').innerHTML = `<i class="fa-solid fa-bolt text-amber-300"></i> <span>Update terakhir pukul ${timeStr}</span>`;
                 }
             } else {
-                document.getElementById('statLastUpdated').innerHTML = `<i class="fa-regular fa-clock"></i> Belum ada data tercatat`;
+                document.getElementById('statLastUpdated').innerHTML = `<i class="fa-regular fa-clock text-blue-300"></i> <span>Belum ada data tamu tercatat</span>`;
+            }
+
+            // Render Grafik Kategori Tamu di Dashboard
+            const categoryContainer = document.getElementById('categoryBreakdownList');
+            if (totalGuests === 0) {
+                categoryContainer.innerHTML = `<p class="text-xs text-slate-400 py-6 text-center">Belum ada data kategori tamu</p>`;
+            } else {
+                const counts = {};
+                guestsData.forEach(g => {
+                    const cat = g.category || 'Umum / Kerabat';
+                    counts[cat] = (counts[cat] || 0) + 1;
+                });
+                const sortedCats = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+                categoryContainer.innerHTML = sortedCats.map(([catName, count]) => {
+                    const pct = Math.round((count / totalGuests) * 100);
+                    return `
+                        <div>
+                            <div class="flex justify-between text-xs font-semibold text-slate-700 mb-1">
+                                <span>${escapeHtml(catName)}</span>
+                                <span class="text-slate-500">${count} Tamu (${pct}%)</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                                <div class="h-full bg-ios-blue rounded-full" style="width: ${pct}%"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Render 5 Tamu Terbaru di Dashboard
+            const recentContainer = document.getElementById('recentGuestsContainer');
+            const recentList = [...guestsData].sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)).slice(0, 5);
+
+            if (recentList.length === 0) {
+                recentContainer.innerHTML = `
+                    <div class="py-10 text-center text-slate-400 text-xs">
+                        <p class="font-semibold text-slate-600 mb-1">Belum ada tamu yang tercatat</p>
+                        <p>Ketuk tombol <strong>+ Catat Tamu</strong> di pojok kanan atas untuk mulai menginput.</p>
+                    </div>
+                `;
+            } else {
+                recentContainer.innerHTML = recentList.map((item) => {
+                    const initials = (item.name || 'T').trim().charAt(0).toUpperCase();
+                    const nominalText = isPrivacyHidden ? 'Rp ••••••••' : formatRupiah(item.amount);
+                    return `
+                        <div class="py-3 flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-3 min-w-0">
+                                <div class="w-10 h-10 rounded-full bg-blue-50 text-ios-blue font-extrabold text-sm flex items-center justify-center flex-shrink-0">
+                                    ${escapeHtml(initials)}
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="font-bold text-sm text-slate-900 truncate">${escapeHtml(item.name)}</p>
+                                    <p class="text-xs text-slate-500 truncate"><i class="fa-solid fa-location-dot text-[10px] mr-1 text-slate-400"></i>${escapeHtml(item.address)}</p>
+                                </div>
+                            </div>
+                            <div class="text-right flex-shrink-0">
+                                <p class="font-extrabold text-sm text-slate-900">${nominalText}</p>
+                                <span class="text-[10px] font-semibold text-slate-400">${escapeHtml(item.method || 'Amplop Tunai')}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
             }
         };
 
@@ -928,7 +1084,6 @@ service cloud.firestore {
             const methodFilter = document.getElementById('filterMethod').value;
             const sortOrder = document.getElementById('sortOrder').value;
 
-            // Filter di Memori JS
             let filtered = guestsData.filter((item) => {
                 const matchSearch =
                     (item.name || '').toLowerCase().includes(searchQuery) ||
@@ -940,39 +1095,29 @@ service cloud.firestore {
                 return matchSearch && matchMethod;
             });
 
-            // Sort di Memori JS
             filtered.sort((a, b) => {
-                if (sortOrder === 'newest') {
-                    return (b.createdAt || 0) - (a.createdAt || 0);
-                } else if (sortOrder === 'highest') {
-                    return (Number(b.amount) || 0) - (Number(a.amount) || 0);
-                } else if (sortOrder === 'lowest') {
-                    return (Number(a.amount) || 0) - (Number(b.amount) || 0);
-                } else if (sortOrder === 'name_asc') {
-                    return (a.name || '').localeCompare(b.name || '', 'id');
-                } else if (sortOrder === 'address_asc') {
-                    return (a.address || '').localeCompare(b.address || '', 'id');
-                }
+                if (sortOrder === 'newest') return (b.createdAt || 0) - (a.createdAt || 0);
+                if (sortOrder === 'highest') return (Number(b.amount) || 0) - (Number(a.amount) || 0);
+                if (sortOrder === 'lowest') return (Number(a.amount) || 0) - (Number(b.amount) || 0);
+                if (sortOrder === 'name_asc') return (a.name || '').localeCompare(b.name || '', 'id');
+                if (sortOrder === 'address_asc') return (a.address || '').localeCompare(b.address || '', 'id');
                 return 0;
             });
 
             document.getElementById('filteredCountBadge').textContent = filtered.length;
-            document.getElementById('tableFooterInfo').textContent = `Menampilkan ${filtered.length} dari ${guestsData.length} total tamu`;
+            document.getElementById('tableFooterInfo').textContent = `Menampilkan ${filtered.length} dari ${guestsData.length} tamu`;
 
             const filteredSubtotal = filtered.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
             document.getElementById('tableFilteredSubtotal').textContent = isPrivacyHidden
-                ? 'Subtotal Filter: Rp ••••••••'
-                : `Subtotal Filter: ${formatRupiah(filteredSubtotal)}`;
+                ? 'Subtotal: Rp ••••••••'
+                : `Subtotal: ${formatRupiah(filteredSubtotal)}`;
 
             if (filtered.length === 0) {
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="5" class="py-12 px-4 text-center text-slate-400">
-                            <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mx-auto mb-2 text-slate-400 text-lg">
-                                <i class="fa-regular fa-folder-open"></i>
-                            </div>
-                            <p class="font-medium text-slate-600">Belum ada data tamu yang cocok</p>
-                            <p class="text-xs mt-0.5">Silakan tambahkan data tamu undangan melalui formulir di samping.</p>
+                            <p class="font-bold text-slate-600">Tidak ada data tamu yang ditemukan</p>
+                            <p class="text-xs mt-1">Ketuk tombol "+ Catat Tamu" di atas untuk menambahkan data tamu baru.</p>
                         </td>
                     </tr>
                 `;
@@ -982,45 +1127,36 @@ service cloud.firestore {
             tbody.innerHTML = filtered.map((item, idx) => {
                 const isTransfer = item.method === 'Transfer / QRIS';
                 const methodBadge = isTransfer
-                    ? `<span class="inline-flex items-center gap-1 text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-md"><i class="fa-solid fa-building-columns"></i> Transfer/QRIS</span>`
-                    : `<span class="inline-flex items-center gap-1 text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200 px-2 py-0.5 rounded-md"><i class="fa-solid fa-envelope-open-text"></i> Amplop Tunai</span>`;
-
-                const categoryBadge = `<span class="text-[10px] font-medium bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">${escapeHtml(item.category || 'Umum')}</span>`;
+                    ? `<span class="inline-flex items-center gap-1 text-[10px] font-bold bg-purple-50 text-purple-700 px-2 py-0.5 rounded-full"><i class="fa-solid fa-qrcode"></i> Transfer/QRIS</span>`
+                    : `<span class="inline-flex items-center gap-1 text-[10px] font-bold bg-amber-50 text-amber-700 px-2 py-0.5 rounded-full"><i class="fa-solid fa-envelope"></i> Amplop Tunai</span>`;
 
                 const displayNominal = isPrivacyHidden ? 'Rp ••••••••' : formatRupiah(item.amount);
-                const timeFormatted = item.createdAt
-                    ? new Date(item.createdAt).toLocaleString('id-ID', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
-                    : '-';
 
                 return `
-                    <tr class="hover:bg-amber-50/40 transition group">
-                        <td class="py-3.5 px-4 text-center font-semibold text-slate-400 text-xs">${idx + 1}</td>
+                    <tr class="hover:bg-slate-50/80 transition">
+                        <td class="py-3.5 px-4 text-center font-bold text-slate-400 text-xs">${idx + 1}</td>
                         <td class="py-3.5 px-4">
-                            <div class="font-bold text-slate-800 text-sm">${escapeHtml(item.name)}</div>
+                            <div class="font-bold text-slate-900 text-sm">${escapeHtml(item.name)}</div>
                             <div class="flex flex-wrap items-center gap-1.5 mt-1">
                                 ${methodBadge}
-                                ${categoryBadge}
-                                <span class="text-[10px] text-slate-400"><i class="fa-regular fa-clock mr-0.5"></i>${timeFormatted}</span>
+                                <span class="text-[10px] font-semibold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">${escapeHtml(item.category || 'Umum')}</span>
                             </div>
-                            ${item.notes ? `<p class="text-xs text-slate-500 italic mt-1"><i class="fa-regular fa-comment-dots mr-1"></i>${escapeHtml(item.notes)}</p>` : ''}
+                            ${item.notes ? `<p class="text-xs text-slate-400 italic mt-1">${escapeHtml(item.notes)}</p>` : ''}
                         </td>
                         <td class="py-3.5 px-4 text-slate-600 text-xs sm:text-sm">
-                            <div class="flex items-start gap-1.5">
-                                <i class="fa-solid fa-location-dot text-slate-400 mt-1 text-xs"></i>
-                                <span>${escapeHtml(item.address)}</span>
-                            </div>
+                            <i class="fa-solid fa-location-dot text-slate-400 mr-1 text-xs"></i>${escapeHtml(item.address)}
                         </td>
-                        <td class="py-3.5 px-4 text-right font-extrabold text-wedding-900 whitespace-nowrap text-sm sm:text-base">
+                        <td class="py-3.5 px-4 text-right font-extrabold text-slate-900 whitespace-nowrap text-sm sm:text-base">
                             ${displayNominal}
                         </td>
                         <td class="py-3.5 px-4 text-center whitespace-nowrap no-print">
                             <div class="inline-flex items-center gap-1">
-                                <button onclick="startEditGuest('${item.id}')" title="Edit Data"
-                                    class="p-2 rounded-lg text-slate-500 hover:text-amber-700 hover:bg-amber-100/60 transition">
+                                <button onclick="startEditGuest('${item.id}')" title="Edit"
+                                    class="w-8 h-8 rounded-full text-slate-400 hover:text-ios-blue hover:bg-blue-50 transition flex items-center justify-center">
                                     <i class="fa-solid fa-pen text-xs"></i>
                                 </button>
-                                <button onclick="promptDeleteGuest('${item.id}')" title="Hapus Data"
-                                    class="p-2 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition">
+                                <button onclick="promptDeleteGuest('${item.id}')" title="Hapus"
+                                    class="w-8 h-8 rounded-full text-slate-400 hover:text-ios-red hover:bg-red-50 transition flex items-center justify-center">
                                     <i class="fa-solid fa-trash text-xs"></i>
                                 </button>
                             </div>
@@ -1030,23 +1166,12 @@ service cloud.firestore {
             }).join('');
         };
 
-        // Sanitasi HTML untuk Keamanan XSS
-        const escapeHtml = (str) => {
-            return String(str || '')
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        };
-
         // ============================================================================
-        // TAMBAH, EDIT & HAPUS DATA (OPERASI FIRESTORE)
+        // MODAL FORM TAMBAH / EDIT TAMU
         // ============================================================================
         const giftForm = document.getElementById('giftForm');
         const amountInput = document.getElementById('giftAmountDisplay');
 
-        // Auto-format ribuan saat mengetik nominal
         amountInput.addEventListener('input', (e) => {
             const cursorPosition = e.target.selectionStart;
             const oldLength = e.target.value.length;
@@ -1056,17 +1181,40 @@ service cloud.firestore {
             e.target.setSelectionRange(newCursor, newCursor);
         });
 
-        // Tombol Cepat Pilih Nominal
         window.setQuickAmount = (val) => {
             amountInput.value = formatThousandDots(val);
             amountInput.focus();
         };
 
-        // Submit Form (Tambah Baru atau Simpan Edit)
+        window.openGuestFormModal = () => {
+            const modal = document.getElementById('guestFormModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => document.getElementById('guestName').focus(), 100);
+        };
+
+        window.closeGuestFormModal = () => {
+            stopVoiceRecognition();
+            const modal = document.getElementById('guestFormModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            resetFormState();
+        };
+
+        window.resetFormState = () => {
+            giftForm.reset();
+            document.getElementById('editDocId').value = '';
+            document.getElementById('formTitle').textContent = 'Catat Tamu Undangan';
+            document.getElementById('editModeBadge').classList.add('hidden');
+            document.getElementById('submitBtnText').textContent = 'Simpan Data Tamu';
+        };
+
         giftForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            stopVoiceRecognition();
+
             if (!currentUser) {
-                showToast("Menunggu koneksi autentikasi cloud...", "error");
+                showToast("Menunggu koneksi ke cloud...", "error");
                 return;
             }
 
@@ -1079,13 +1227,13 @@ service cloud.firestore {
             const notes = document.getElementById('guestNotes').value.trim();
 
             if (!name || !address || rawAmount <= 0) {
-                showToast("Mohon lengkapi nama, alamat, dan nominal hadiah yang valid.", "error");
+                showToast("Mohon lengkapi nama, alamat, dan nominal hadiah.", "error");
                 return;
             }
 
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-70');
+            submitBtn.classList.add('opacity-60');
 
             try {
                 const giftsCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'wedding_gifts');
@@ -1099,8 +1247,7 @@ service cloud.firestore {
                         method,
                         category,
                         notes,
-                        updatedAt: Date.now(),
-                        updatedBy: currentUser.uid
+                        updatedAt: Date.now()
                     });
                     showToast(`Data "${name}" berhasil diperbarui!`);
                 } else {
@@ -1112,23 +1259,21 @@ service cloud.firestore {
                         category,
                         notes,
                         createdAt: Date.now(),
-                        updatedAt: Date.now(),
-                        createdBy: currentUser.uid
+                        updatedAt: Date.now()
                     });
-                    showToast(`Terima kasih! Data "${name}" berhasil disimpan online.`);
+                    showToast(`Data "${name}" berhasil disimpan!`);
                 }
 
-                resetFormState();
+                closeGuestFormModal();
             } catch (err) {
-                console.error("Gagal menyimpan data:", err);
-                showToast("Gagal menyimpan data ke cloud. Periksa koneksi Anda.", "error");
+                console.error("Gagal menyimpan:", err);
+                showToast("Gagal menyimpan data. Pastikan koneksi internet aktif.", "error");
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.classList.remove('opacity-70');
+                submitBtn.classList.remove('opacity-60');
             }
         });
 
-        // Mulai Mode Edit
         window.startEditGuest = (id) => {
             const guest = guestsData.find(g => g.id === id);
             if (!guest) return;
@@ -1143,31 +1288,18 @@ service cloud.firestore {
 
             document.getElementById('formTitle').textContent = 'Edit Data Tamu';
             document.getElementById('editModeBadge').classList.remove('hidden');
-            document.getElementById('submitBtnText').textContent = 'Perbarui Data';
-            document.getElementById('cancelEditBtn').classList.remove('hidden');
+            document.getElementById('submitBtnText').textContent = 'Simpan Perubahan';
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            document.getElementById('guestName').focus();
+            openGuestFormModal();
         };
 
-        // Reset Form ke Mode Tambah
-        window.resetFormState = () => {
-            giftForm.reset();
-            document.getElementById('editDocId').value = '';
-            document.getElementById('formTitle').textContent = 'Tambah Data Tamu';
-            document.getElementById('editModeBadge').classList.add('hidden');
-            document.getElementById('submitBtnText').textContent = 'Simpan Data Online';
-            document.getElementById('cancelEditBtn').classList.add('hidden');
-        };
-
-        // Buka Modal Konfirmasi Hapus
         window.promptDeleteGuest = (id) => {
             const guest = guestsData.find(g => g.id === id);
             if (!guest) return;
 
             pendingDeleteId = id;
             document.getElementById('deleteModalDesc').textContent =
-                `Apakah Anda yakin ingin menghapus data "${guest.name}" (${formatRupiah(guest.amount)}) dari daftar online?`;
+                `Hapus "${guest.name}" (${formatRupiah(guest.amount)}) dari daftar tamu?`;
             const modal = document.getElementById('deleteModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
@@ -1185,12 +1317,8 @@ service cloud.firestore {
             try {
                 const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'wedding_gifts', pendingDeleteId);
                 await deleteDoc(docRef);
-                showToast("Data tamu berhasil dihapus.");
-                if (document.getElementById('editDocId').value === pendingDeleteId) {
-                    resetFormState();
-                }
+                showToast("Data tamu telah dihapus.");
             } catch (err) {
-                console.error("Gagal menghapus data:", err);
                 showToast("Gagal menghapus data.", "error");
             } finally {
                 closeDeleteModal();
@@ -1198,17 +1326,16 @@ service cloud.firestore {
         });
 
         // ============================================================================
-        // FITUR TAMBAHAN: PRIVASI NOMINAL, PENGATURAN MEMPELAI, & UNDUH CSV
+        // PRIVASI NOMINAL, UBAH NAMA MEMPELAI, & EKSPOR EXCEL/CSV
         // ============================================================================
         window.togglePrivacyAmount = () => {
             isPrivacyHidden = !isPrivacyHidden;
             const icon = document.getElementById('privacyIcon');
-            icon.className = isPrivacyHidden ? 'fa-regular fa-eye-slash text-sm text-amber-700' : 'fa-regular fa-eye text-sm';
-            updateSummaryStats();
+            icon.className = isPrivacyHidden ? 'fa-regular fa-eye-slash text-sm text-amber-300' : 'fa-regular fa-eye text-sm';
+            updateDashboardAndStats();
             renderGuestList();
         };
 
-        // Modal Nama Mempelai
         window.openCoupleModal = () => {
             const modal = document.getElementById('coupleModal');
             modal.classList.remove('hidden');
@@ -1224,45 +1351,24 @@ service cloud.firestore {
         document.getElementById('coupleSettingsForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             if (!currentUser) return;
-
             const coupleName = document.getElementById('inputCoupleName').value.trim();
             const eventDate = document.getElementById('inputEventDate').value.trim();
 
             try {
                 const settingsDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'wedding_settings', 'header_info');
-                await setDoc(settingsDocRef, {
-                    coupleName,
-                    eventDate,
-                    updatedAt: Date.now()
-                });
-                showToast("Nama mempelai & info acara berhasil diperbarui!");
+                await setDoc(settingsDocRef, { coupleName, eventDate, updatedAt: Date.now() });
+                showToast("Nama mempelai diperbarui!");
                 closeCoupleModal();
             } catch (err) {
-                console.error("Gagal menyimpan pengaturan:", err);
-                showToast("Gagal menyimpan pengaturan mempelai.", "error");
+                showToast("Gagal menyimpan perubahan.", "error");
             }
         });
 
-        // Modal Panduan GitHub
-        window.openGithubGuideModal = () => {
-            const modal = document.getElementById('githubGuideModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        };
-
-        window.closeGithubGuideModal = () => {
-            const modal = document.getElementById('githubGuideModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        };
-
-        // Export ke CSV (Kompatibel dengan Microsoft Excel & Google Sheets)
         window.exportToCSV = () => {
             if (guestsData.length === 0) {
-                showToast("Belum ada data untuk diunduh.", "error");
+                showToast("Belum ada data tamu untuk diunduh.", "error");
                 return;
             }
-
             const headers = ["No", "Nama Lengkap Tamu", "Alamat / Instansi", "Nominal Hadiah (Rp)", "Metode", "Kategori", "Catatan", "Waktu Input"];
             const rows = guestsData.map((g, idx) => [
                 idx + 1,
@@ -1278,193 +1384,45 @@ service cloud.firestore {
             const csvContent = "\uFEFF" + [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
             const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
             const url = URL.createObjectURL(blob);
-
             const link = document.createElement("a");
             link.setAttribute("href", url);
-            link.setAttribute("download", `Rekap_Hadiah_Pernikahan_${new Date().toISOString().slice(0, 10)}.csv`);
+            link.setAttribute("download", `Data_Tamu_Pernikahan_${new Date().toISOString().slice(0, 10)}.csv`);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            showToast("File Excel/CSV berhasil diunduh!");
+            showToast("Laporan Excel/CSV berhasil diunduh!");
         };
 
         // ============================================================================
-        // SISTEM PWA (MANIFEST.JSON, SW.JS, GENERATOR ICON 192PX & 512PX, & INSTALLER)
+        // SISTEM PWA OTOMATIS DI LATAR BELAKANG (TANPA MENAMPILKAN KODE KE PUBLIK)
         // ============================================================================
         let deferredInstallPrompt = null;
 
-        // 1. Fungsi Pembuat Kode manifest.json
-        window.getManifestJsonString = () => {
-            const manifestObj = {
-                name: "Buku Tamu & Catatan Hadiah Pernikahan Online",
-                short_name: "E-Amplop",
-                description: "Aplikasi pencatat tamu undangan dan nominal hadiah pernikahan real-time online.",
-                start_url: "./index.html",
-                scope: "./",
-                display: "standalone",
-                orientation: "portrait",
-                background_color: "#fdfbf7",
-                theme_color: "#13261f",
-                icons: [
-                    {
-                        src: "icon-192.png",
-                        sizes: "192x192",
-                        type: "image/png",
-                        purpose: "any maskable"
-                    },
-                    {
-                        src: "icon-512.png",
-                        sizes: "512x512",
-                        type: "image/png",
-                        purpose: "any maskable"
-                    }
-                ]
-            };
-            return JSON.stringify(manifestObj, null, 2);
-        };
-
-        // 2. Fungsi Pembuat Kode sw.js (Service Worker)
-        window.getServiceWorkerString = () => {
-            return `// Service Worker (sw.js) - Aplikasi Buku Tamu & Amplop Digital Pernikahan
-const CACHE_NAME = 'e-amplop-pernikahan-v1';
-const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png',
-  'https://cdn.tailwindcss.com',
-  'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
-];
-
-// Event Install: Simpan aset utama ke dalam cache HP
-self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
-  self.skipWaiting();
-});
-
-// Event Activate: Bersihkan cache versi lama jika ada update
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            return caches.delete(cache);
-          }
-        })
-      );
-    })
-  );
-  self.clients.claim();
-});
-
-// Event Fetch: Strategi Network-First dengan Fallback ke Cache
-self.addEventListener('fetch', (event) => {
-  // Jangan cache request realtime database Firebase/Firestore
-  if (
-    event.request.url.includes('firestore.googleapis.com') ||
-    event.request.url.includes('identitytoolkit.googleapis.com') ||
-    event.request.method !== 'GET'
-  ) {
-    return;
-  }
-
-  event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
-        const responseClone = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseClone);
-        });
-        return networkResponse;
-      })
-      .catch(() => {
-        return caches.match(event.request).then((cachedResponse) => {
-          return cachedResponse || caches.match('./index.html');
-        });
-      })
-  );
-});`;
-        };
-
-        // 3. Fungsi Menggambar Icon 192x192 dan 512x512 di HTML5 Canvas
-        const drawWeddingAppIcon = (canvasId, size) => {
+        const generateAppIconSilent = (canvasId, size) => {
             const canvas = document.getElementById(canvasId);
             if (!canvas) return null;
             const ctx = canvas.getContext('2d');
             const s = size;
             const center = s / 2;
 
-            ctx.clearRect(0, 0, s, s);
-
-            // Background Emerald Gelap Mewah
-            const bgGrad = ctx.createRadialGradient(center, center * 0.7, s * 0.08, center, center, s * 0.75);
-            bgGrad.addColorStop(0, '#224739');
-            bgGrad.addColorStop(1, '#10211b');
+            const bgGrad = ctx.createLinearGradient(0, 0, s, s);
+            bgGrad.addColorStop(0, '#007AFF');
+            bgGrad.addColorStop(1, '#1D4ED8');
             ctx.fillStyle = bgGrad;
-
-            // Bentuk Kotak Membulat (Maskable-friendly)
-            const radius = s * 0.18;
             ctx.beginPath();
-            ctx.moveTo(radius, 0);
-            ctx.lineTo(s - radius, 0);
-            ctx.quadraticCurveTo(s, 0, s, radius);
-            ctx.lineTo(s, s - radius);
-            ctx.quadraticCurveTo(s, s, s - radius, s);
-            ctx.lineTo(radius, s);
-            ctx.quadraticCurveTo(0, s, 0, s - radius);
-            ctx.lineTo(0, radius);
-            ctx.quadraticCurveTo(0, 0, radius, 0);
-            ctx.closePath();
+            ctx.roundRect(0, 0, s, s, s * 0.22);
             ctx.fill();
 
-            // Bingkai Ornamen Emas Dalam
-            const pad = s * 0.07;
-            const innerR = s * 0.13;
-            const goldGrad = ctx.createLinearGradient(0, 0, s, s);
-            goldGrad.addColorStop(0, '#f9e29c');
-            goldGrad.addColorStop(0.5, '#d4af37');
-            goldGrad.addColorStop(1, '#9c771c');
-
-            ctx.strokeStyle = goldGrad;
-            ctx.lineWidth = s * 0.018;
-            ctx.beginPath();
-            ctx.roundRect(pad, pad, s - pad * 2, s - pad * 2, innerR);
-            ctx.stroke();
-
-            // Ilustrasi Amplop Pernikahan Emas di Tengah
-            const envW = s * 0.50;
-            const envH = s * 0.34;
+            ctx.fillStyle = '#FFFFFF';
+            const envW = s * 0.54;
+            const envH = s * 0.38;
             const envX = (s - envW) / 2;
-            const envY = s * 0.28;
-
-            // Badan Amplop
-            ctx.fillStyle = '#fdfbf7';
-            ctx.shadowColor = 'rgba(0,0,0,0.35)';
-            ctx.shadowBlur = s * 0.04;
-            ctx.shadowOffsetY = s * 0.015;
+            const envY = (s - envH) / 2;
             ctx.beginPath();
-            ctx.roundRect(envX, envY, envW, envH, s * 0.03);
+            ctx.roundRect(envX, envY, envW, envH, s * 0.04);
             ctx.fill();
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetY = 0;
 
-            // Garis Lipatan Amplop Emas
-            ctx.strokeStyle = '#c59b27';
-            ctx.lineWidth = s * 0.014;
-            ctx.beginPath();
-            ctx.moveTo(envX, envY + envH);
-            ctx.lineTo(center, envY + envH * 0.45);
-            ctx.lineTo(envX + envW, envY + envH);
-            ctx.stroke();
-
-            // Tutup Atas Amplop (Flap)
-            ctx.fillStyle = goldGrad;
+            ctx.fillStyle = '#93C5FD';
             ctx.beginPath();
             ctx.moveTo(envX, envY);
             ctx.lineTo(center, envY + envH * 0.55);
@@ -1472,108 +1430,49 @@ self.addEventListener('fetch', (event) => {
             ctx.closePath();
             ctx.fill();
 
-            // Segel Hati Merah/Emas di Tengah Amplop
-            const heartY = envY + envH * 0.52;
-            const heartR = s * 0.065;
-            ctx.fillStyle = '#b91c1c';
-            ctx.beginPath();
-            ctx.arc(center, heartY, heartR, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.strokeStyle = '#fde68a';
-            ctx.lineWidth = s * 0.008;
-            ctx.stroke();
-
-            // Simbol Dua Cincin Kawin di Atas Amplop
-            const ringY = s * 0.20;
-            const ringR = s * 0.052;
-            ctx.strokeStyle = goldGrad;
-            ctx.lineWidth = s * 0.018;
-            ctx.beginPath();
-            ctx.arc(center - ringR * 0.65, ringY, ringR, 0, Math.PI * 2);
-            ctx.stroke();
-            ctx.beginPath();
-            ctx.arc(center + ringR * 0.65, ringY, ringR, 0, Math.PI * 2);
-            ctx.stroke();
-
-            // Teks "E-AMPLOP" di Bawah Amplop
-            ctx.fillStyle = '#fde68a';
-            ctx.font = `bold ${Math.round(s * 0.095)}px "Playfair Display", Georgia, serif`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('E-AMPLOP', center, s * 0.76);
-
-            // Subteks "BUKU TAMU"
-            ctx.fillStyle = '#cbd5e1';
-            ctx.font = `600 ${Math.round(s * 0.042)}px "Inter", sans-serif`;
-            ctx.fillText('WEDDING GIFT', center, s * 0.85);
-
             return canvas.toDataURL('image/png');
         };
 
-        // 4. Inisialisasi PWA, Render Icon, & Registrasi Service Worker
-        const initPwaSystem = () => {
-            // Render kedua ukuran icon (192px & 512px)
-            const icon192DataUrl = drawWeddingAppIcon('canvasIcon192', 192);
-            const icon512DataUrl = drawWeddingAppIcon('canvasIcon512', 512);
+        const initSilentPwa = () => {
+            const icon192 = generateAppIconSilent('canvasIcon192', 192);
+            const icon512 = generateAppIconSilent('canvasIcon512', 512);
 
-            // Isi teks kode pada modal PWA Kit
-            document.getElementById('manifestCodeBlock').textContent = window.getManifestJsonString();
-            document.getElementById('swCodeBlock').textContent = window.getServiceWorkerString();
-
-            // Pasang icon 192px ke favicon & apple-touch-icon secara dinamis
-            if (icon192DataUrl) {
-                document.getElementById('appleTouchIconLink').href = icon192DataUrl;
-                document.getElementById('faviconLink').href = icon192DataUrl;
+            if (icon192) {
+                document.getElementById('appleTouchIconLink').href = icon192;
+                document.getElementById('faviconLink').href = icon192;
             }
 
-            // Registrasi Service Worker (sw.js) untuk GitHub Pages
             if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('./sw.js')
-                    .then((reg) => {
-                        console.log('Service Worker sw.js aktif di scope:', reg.scope);
-                    })
-                    .catch(() => {
-                        // Jika file sw.js fisik belum diupload (misal di pratinjau), pasang manifest dinamis
-                        if (icon192DataUrl && icon512DataUrl) {
-                            const dynamicManifest = {
-                                name: "Buku Tamu & Catatan Hadiah Pernikahan Online",
-                                short_name: "E-Amplop",
-                                start_url: window.location.href,
-                                display: "standalone",
-                                background_color: "#fdfbf7",
-                                theme_color: "#13261f",
-                                icons: [
-                                    { src: icon192DataUrl, sizes: "192x192", type: "image/png" },
-                                    { src: icon512DataUrl, sizes: "512x512", type: "image/png" }
-                                ]
-                            };
-                            const blob = new Blob([JSON.stringify(dynamicManifest)], { type: 'application/json' });
-                            document.getElementById('pwaManifestLink').href = URL.createObjectURL(blob);
-                        }
-                    });
+                navigator.serviceWorker.register('./sw.js').catch(() => {
+                    if (icon192 && icon512) {
+                        const dynamicManifest = {
+                            name: "E-Amplop & Buku Tamu Pernikahan",
+                            short_name: "E-Amplop",
+                            start_url: window.location.href,
+                            display: "standalone",
+                            background_color: "#F2F2F7",
+                            theme_color: "#F2F2F7",
+                            icons: [
+                                { src: icon192, sizes: "192x192", type: "image/png" },
+                                { src: icon512, sizes: "512x512", type: "image/png" }
+                            ]
+                        };
+                        const blob = new Blob([JSON.stringify(dynamicManifest)], { type: 'application/json' });
+                        document.getElementById('pwaManifestLink').href = URL.createObjectURL(blob);
+                    }
+                });
             }
 
-            // Tangkap event beforeinstallprompt di Android / Chrome Desktop
             window.addEventListener('beforeinstallprompt', (e) => {
                 e.preventDefault();
                 deferredInstallPrompt = e;
             });
-
-            window.addEventListener('appinstalled', () => {
-                deferredInstallPrompt = null;
-                showToast("Aplikasi berhasil di-install di perangkat Anda!");
-            });
         };
 
-        // 5. Fungsi Klik Tombol "Install di HP"
         window.triggerInstallPwa = async () => {
             if (deferredInstallPrompt) {
                 deferredInstallPrompt.prompt();
-                const { outcome } = await deferredInstallPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    showToast("Menginstal aplikasi ke layar utama HP...");
-                }
+                await deferredInstallPrompt.userChoice;
                 deferredInstallPrompt = null;
             } else {
                 const modal = document.getElementById('installGuideModal');
@@ -1588,89 +1487,8 @@ self.addEventListener('fetch', (event) => {
             modal.classList.remove('flex');
         };
 
-        // 6. Buka / Tutup Modal PWA Kit
-        window.openPwaKitModal = () => {
-            drawWeddingAppIcon('canvasIcon192', 192);
-            drawWeddingAppIcon('canvasIcon512', 512);
-            const modal = document.getElementById('pwaKitModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        };
-
-        window.closePwaKitModal = () => {
-            const modal = document.getElementById('pwaKitModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        };
-
-        // 7. Fungsi Unduh Icon PNG (192x192 atau 512x512)
-        window.downloadCanvasIcon = (size, filename) => {
-            const canvasId = size === 192 ? 'canvasIcon192' : 'canvasIcon512';
-            drawWeddingAppIcon(canvasId, size);
-            const canvas = document.getElementById(canvasId);
-            canvas.toBlob((blob) => {
-                if (!blob) return;
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                showToast(`File ${filename} (${size}x${size}px) berhasil diunduh!`);
-            }, 'image/png');
-        };
-
-        // 8. Fungsi Unduh File Kode (manifest.json & sw.js)
-        window.downloadTextFile = (filename, content, mimeType) => {
-            const blob = new Blob([content], { type: `${mimeType};charset=utf-8;` });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            showToast(`File ${filename} berhasil diunduh!`);
-        };
-
-        // 9. Fungsi Unduh Semua 4 File PWA Sekaligus
-        window.downloadAllPwaFiles = () => {
-            window.downloadTextFile('manifest.json', window.getManifestJsonString(), 'application/json');
-            setTimeout(() => {
-                window.downloadTextFile('sw.js', window.getServiceWorkerString(), 'application/javascript');
-            }, 350);
-            setTimeout(() => {
-                window.downloadCanvasIcon(192, 'icon-192.png');
-            }, 700);
-            setTimeout(() => {
-                window.downloadCanvasIcon(512, 'icon-512.png');
-            }, 1050);
-        };
-
-        // 10. Fungsi Salin Kode ke Clipboard (Menggunakan execCommand agar aman di iFrame)
-        window.copyCodeFromElement = (elementId, fileLabel) => {
-            const text = document.getElementById(elementId).textContent;
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-            document.body.appendChild(textarea);
-            textarea.select();
-            try {
-                document.execCommand('copy');
-                showToast(`Kode ${fileLabel} berhasil disalin ke clipboard!`);
-            } catch (err) {
-                showToast(`Gagal menyalin kode ${fileLabel}.`, 'error');
-            }
-            document.body.removeChild(textarea);
-        };
-
-        // Jalankan Aplikasi & Sistem PWA saat Halaman Selesai Dimuat
         window.addEventListener('DOMContentLoaded', () => {
-            initPwaSystem();
+            initSilentPwa();
             initApplication();
         });
     </script>
